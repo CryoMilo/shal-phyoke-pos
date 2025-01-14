@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import supabase from "../utils/supabase";
 
 function App() {
-	const [countries, setCountries] = useState([]);
+	const [menu, setMenu] = useState([]);
 
 	useEffect(() => {
 		getCountries();
@@ -10,15 +10,15 @@ function App() {
 
 	async function getCountries() {
 		const { data } = await supabase.from("menu_item").select();
-		setCountries(data);
+		setMenu(data);
 	}
 
 	return (
 		<div>
 			Waassup
 			<ul>
-				{countries.map((country) => (
-					<li key={country.name}>{country.name}</li>
+				{menu.map((item) => (
+					<li key={item.menu_id}>{item.menu_name}</li>
 				))}
 			</ul>
 		</div>
