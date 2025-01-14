@@ -5,10 +5,10 @@ function App() {
 	const [menu, setMenu] = useState([]);
 
 	useEffect(() => {
-		getCountries();
+		getMenu();
 	}, []);
 
-	async function getCountries() {
+	async function getMenu() {
 		const { data } = await supabase.from("menu_item").select();
 		setMenu(data);
 	}
@@ -18,7 +18,9 @@ function App() {
 			Waassup
 			<ul>
 				{menu.map((item) => (
-					<li key={item.menu_id}>{item.menu_name}</li>
+					<li key={item.menu_id}>
+						{item.menu_name} - {item.price}
+					</li>
 				))}
 			</ul>
 		</div>
