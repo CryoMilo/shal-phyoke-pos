@@ -98,7 +98,7 @@ function CreateMenuItem() {
 }
 
 // Main Component
-export default function Home() {
+export default function createMenu() {
 	return (
 		<div>
 			<h1>Shal-Phyoke-POS</h1>
