@@ -7,6 +7,9 @@ import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import CreateMenu from "./components/Menu/create";
 import EditMenu from "./components/Menu/edit";
+import Order from "./pages/Order";
+import CreateOrder from "./components/Order/create";
+import EditOrder from "./components/Order/edit";
 
 const router = createBrowserRouter([
 	{
@@ -28,6 +31,18 @@ const router = createBrowserRouter([
 	{
 		path: "/menu/edit",
 		element: <EditMenu />,
+	},
+	{
+		path: "/order",
+		element: <Order />,
+	},
+	{
+		path: "/order/create",
+		element: <CreateOrder />,
+	},
+	{
+		path: "/order/edit",
+		element: <EditOrder />,
 	},
 ]);
 
