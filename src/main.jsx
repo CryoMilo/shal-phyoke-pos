@@ -42,6 +42,16 @@ const router = createBrowserRouter([
 	{
 		path: "/order/create",
 		element: <CreateOrder />,
+		children: [
+			{
+				path: "table",
+				element: <CreateOrder orderType="table" />,
+			},
+			{
+				path: "individual",
+				element: <CreateOrder orderType="individual" />,
+			},
+		],
 	},
 	{
 		path: "/order/edit",

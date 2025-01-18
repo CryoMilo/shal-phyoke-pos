@@ -1,5 +1,9 @@
 const CreateOrder = () => {
-	return <div>CreateOrder</div>;
+	return (
+		<div>
+			<h2>Create Your Order</h2>
+		</div>
+	);
 };
 
 export default CreateOrder;
