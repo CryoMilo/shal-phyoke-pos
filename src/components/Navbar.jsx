@@ -12,6 +12,9 @@ const Navbar = () => {
 			<Link to="/order" className="text-blue-600">
 				Order
 			</Link>
+			<Link to="/table" className="text-blue-600">
+				Table
+			</Link>
 		</nav>
 	);
 };

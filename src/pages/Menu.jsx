@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../utils/supabase";
+import { Link } from "react-router-dom";
 
 const Menu = () => {
 	const [menu, setMenu] = useState([]);
@@ -22,6 +23,7 @@ const Menu = () => {
 			{menu.map((item) => (
 				<li key={item.menu_id}>{item.menu_name}</li>
 			))}
+			<Link to="/menu/create">Create Menu</Link>
 		</ul>
 	);
 };

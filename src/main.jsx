@@ -10,6 +10,9 @@ import EditMenu from "./components/Menu/edit";
 import Order from "./pages/Order";
 import CreateOrder from "./components/Order/create";
 import EditOrder from "./components/Order/edit";
+import Table from "./pages/Table";
+import CreateTable from "./components/Table/create";
+import EditTable from "./components/Table/edit";
 
 const router = createBrowserRouter([
 	{
@@ -43,6 +46,18 @@ const router = createBrowserRouter([
 	{
 		path: "/order/edit",
 		element: <EditOrder />,
+	},
+	{
+		path: "/table",
+		element: <Table />,
+	},
+	{
+		path: "/table/create",
+		element: <CreateTable />,
+	},
+	{
+		path: "/table/edit",
+		element: <EditTable />,
 	},
 ]);
 
