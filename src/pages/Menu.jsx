@@ -6,7 +6,7 @@ const Menu = () => {
 	const [menu, setMenu] = useState([]);
 
 	const getMenu = async () => {
-		const { data, error } = await supabase.from("menu_item").select("*"); // Use select() instead of fetch()
+		const { data, error } = await supabase.from("menu").select("*");
 		if (error) {
 			console.error("Error fetching menu:", error.message);
 			return;
