@@ -1,68 +1,31 @@
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import supabase from "../utils/supabase";
 
-const CreateTable = () => {
-	const [tableName, setTableName] = useState("");
-	const [occupied, setOccupied] = useState(false);
+const Table = () => {
+	const [menu, setMenu] = useState([]);
 
-	async function handleCreateTable() {
-		if (!tableName) {
-			alert("Table name is required.");
+	const getTable = async () => {
+		const { data, error } = await supabase.from("table").select("*"); // Use select() instead of fetch()
+		if (error) {
+			console.error("Error fetching tables:", error.message);
 			return;
 		}
+		setMenu(data);
+	};
 
-		const tableId = uuidv4();
-
-		const { error } = await supabase.from("tables").insert([
-			{
-				table_id: tableId,
-				table_name: tableName,
-				occupied,
-			},
-		]);
-
-		if (error) {
-			console.error("Error creating table:", error);
-			alert("Failed to create table.");
-		} else {
-			alert("Table created successfully!");
-			setTableName("");
-			setOccupied(false);
-		}
-	}
+	useEffect(() => {
+		getTable();
+	}, []);
 
 	return (
-		<div>
-			<h2>Create Table</h2>
-			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					handleCreateTable();
-				}}>
-				<label>
-					Table Name:
-					<input
-						type="text"
-						value={tableName}
-						onChange={(e) => setTableName(e.target.value)}
-						required
-					/>
-				</label>
-				<br />
-				<label>
-					Occupied:
-					<input
-						type="checkbox"
-						checked={occupied}
-						onChange={(e) => setOccupied(e.target.checked)}
-					/>
-				</label>
-				<br />
-				<button type="submit">Create</button>
-			</form>
-		</div>
+		<ul>
+			{menu.map((item) => (
+				<li key={item.table_id}>{item.table_name}</li>
+			))}
+			<Link to="/table/create">Create Table</Link>
+		</ul>
 	);
 };
 
-export default CreateTable;
+export default Table;

@@ -5,8 +5,6 @@ export const CreateMenuItem = () => {
 	const [menuName, setMenuName] = useState("");
 	const [price, setPrice] = useState(0);
 	const [description, setDescription] = useState("");
-	const [isVegan, setIsVegan] = useState(false);
-	const [taste, setTaste] = useState("");
 
 	async function handleCreateMenuItem() {
 		if (!menuName || price <= 0) {
@@ -14,13 +12,11 @@ export const CreateMenuItem = () => {
 			return;
 		}
 
-		const { error } = await supabase.from("menu_item").insert([
+		const { error } = await supabase.from("menu").insert([
 			{
 				menu_name: menuName,
 				price,
 				description,
-				is_vegan: isVegan,
-				taste,
 			},
 		]);
 
@@ -32,8 +28,6 @@ export const CreateMenuItem = () => {
 			setMenuName("");
 			setPrice(0);
 			setDescription("");
-			setIsVegan(false);
-			setTaste("");
 		}
 	}
 
@@ -70,24 +64,6 @@ export const CreateMenuItem = () => {
 					<textarea
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}></textarea>
-				</label>
-				<br />
-				<label>
-					Is Vegan:
-					<input
-						type="checkbox"
-						checked={isVegan}
-						onChange={(e) => setIsVegan(e.target.checked)}
-					/>
-				</label>
-				<br />
-				<label>
-					Taste:
-					<input
-						type="text"
-						value={taste}
-						onChange={(e) => setTaste(e.target.value)}
-					/>
 				</label>
 				<br />
 				<button type="submit">Create</button>
