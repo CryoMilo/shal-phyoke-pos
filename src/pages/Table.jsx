@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import supabase from "../utils/supabase";
 
 const Table = () => {
-	const [menu, setMenu] = useState([]);
+	const [table, setTable] = useState([]);
 
 	const getTable = async () => {
 		const { data, error } = await supabase.from("table").select("*"); // Use select() instead of fetch()
@@ -11,7 +11,7 @@ const Table = () => {
 			console.error("Error fetching tables:", error.message);
 			return;
 		}
-		setMenu(data);
+		setTable(data);
 	};
 
 	useEffect(() => {
@@ -20,7 +20,7 @@ const Table = () => {
 
 	return (
 		<ul>
-			{menu.map((item) => (
+			{table.map((item) => (
 				<li key={item.table_id}>{item.table_name}</li>
 			))}
 			<Link to="/table/create">Create Table</Link>
