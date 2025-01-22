@@ -7,7 +7,31 @@ const CreateOrder = () => {
 	const [selectedMenu, setSelectedMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [paymentMethod, setPaymentMethod] = useState(""); // For radio group
-	const [isPaid, setIsPaid] = useState(false); // For the "Paid" checkbox
+	const [isPaid, setIsPaid] = useState(false);
+
+	async function handleCreateOrder() {
+		if (paymentMethod === "" || selectedMenu == []) {
+			alert("INVALID FIELDS");
+			return;
+		}
+
+		const { error } = await supabase.from("order").insert([
+			{
+				status: "making",
+				paid: isPaid,
+				payment_method: paymentMethod,
+				table_id: selectedTable?.id || null,
+				menu_items: selectedMenu,
+			},
+		]);
+
+		if (error) {
+			console.error("Error creating menu item:", error);
+			alert("Failed to create menu item.");
+		} else {
+			alert("Menu item created successfully!");
+		}
+	}
 
 	const getMenu = async () => {
 		const { data, error } = await supabase.from("menu").select("*");
@@ -71,11 +95,11 @@ const CreateOrder = () => {
 					<ul>
 						{table.map((item) => (
 							<li
+								key={table.id}
 								className={`cursor-pointer ${
 									selectedTable?.table_id === item.table_id ? "font-bold" : ""
 								}`}
-								onClick={() => handleTableClick(item)}
-								key={item.table_id}>
+								onClick={() => handleTableClick(item)}>
 								{item.table_name}
 							</li>
 						))}
@@ -127,8 +151,8 @@ const CreateOrder = () => {
 							id="cash"
 							type="radio"
 							name="payment"
-							value="Cash"
-							checked={paymentMethod === "Cash"}
+							value="cash"
+							checked={paymentMethod === "cash"}
 							onChange={handlePaymentChange}
 						/>
 						Cash
@@ -140,8 +164,8 @@ const CreateOrder = () => {
 							id="qr"
 							type="radio"
 							name="payment"
-							value="QR"
-							checked={paymentMethod === "QR"}
+							value="qr"
+							checked={paymentMethod === "qr"}
 							onChange={handlePaymentChange}
 						/>
 						QR
@@ -162,6 +186,10 @@ const CreateOrder = () => {
 					Selected Payment: {paymentMethod || "None"} <br />
 					Payment Status: {isPaid ? "Paid" : "Unpaid"}
 				</p>
+
+				<button className="mt-10" onClick={handleCreateOrder}>
+					Confirm
+				</button>
 			</div>
 		</div>
 	);
