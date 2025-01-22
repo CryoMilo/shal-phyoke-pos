@@ -85,8 +85,14 @@ const Order = () => {
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
 									<div className="flex flex-col gap-2">
-										<button>Edit</button>
-										<button>Payment</button>
+										<button>
+											<Link to={`/order/edit/${order.id}`}>Edit</Link>
+										</button>
+										{order.paid ? (
+											<button className="bg-blue-400">Complete</button>
+										) : (
+											<button className="bg-green-500">Payment</button>
+										)}
 									</div>
 								</td>
 							</tr>
