@@ -13,6 +13,7 @@ import EditOrder from "./components/Order/edit";
 import Table from "./pages/Table";
 import CreateTable from "./components/Table/create";
 import EditTable from "./components/Table/edit";
+import ManageOrder from "./components/Order/manageOrder";
 
 const router = createBrowserRouter([
 	{
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/order/create",
-		element: <CreateOrder />,
+		element: <ManageOrder />,
 	},
 	{
 		path: "/order/edit/:orderId",
