@@ -8,7 +8,6 @@ import Menu from "./pages/Menu";
 import CreateMenu from "./components/Menu/create";
 import EditMenu from "./components/Menu/edit";
 import Order from "./pages/Order";
-import CreateOrder from "./components/Order/create";
 import EditOrder from "./components/Order/edit";
 import Table from "./pages/Table";
 import CreateTable from "./components/Table/create";

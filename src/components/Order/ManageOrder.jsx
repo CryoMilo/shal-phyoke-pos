@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
+import SelectTableModal from "./SelectTableModal";
+import PaymentModal from "./PaymentModal";
 
 const ManageOrder = () => {
 	const [menu, setMenu] = useState([]);
-	const [table, setTable] = useState([]);
-	const [selectedMenu, setSelectedMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);
+	const [selectedMenu, setSelectedMenu] = useState([]);
 	const [paymentMethod, setPaymentMethod] = useState("");
 	const [isPaid, setIsPaid] = useState(false);
+	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
+	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
 	async function handleCreateOrder() {
-		if (paymentMethod === "" || selectedMenu == []) {
+		if (paymentMethod === "" || selectedMenu.length === 0) {
 			alert("INVALID FIELDS");
 			return;
 		}
@@ -42,18 +45,8 @@ const ManageOrder = () => {
 		setMenu(data);
 	};
 
-	const getTable = async () => {
-		const { data, error } = await supabase.from("table").select("*");
-		if (error) {
-			console.error("Error fetching tables:", error.message);
-			return;
-		}
-		setTable(data);
-	};
-
 	useEffect(() => {
 		getMenu();
-		getTable();
 	}, []);
 
 	const handleMenuClick = (item) => {
@@ -74,53 +67,123 @@ const ManageOrder = () => {
 		});
 	};
 
-	const handleTableClick = (item) => {
-		setSelectedTable(item);
+	const handleRemoveItem = (item) => {
+		setSelectedMenu((prevSelectedMenu) =>
+			prevSelectedMenu
+				.map((selectedItem) =>
+					selectedItem.menu_name === item.menu_name
+						? { ...selectedItem, quantity: selectedItem.quantity - 1 }
+						: selectedItem
+				)
+				.filter((selectedItem) => selectedItem.quantity > 0)
+		);
 	};
 
-	const handlePaymentChange = (event) => {
-		setPaymentMethod(event.target.value);
-	};
-
-	const handlePaidChange = (event) => {
-		setIsPaid(event.target.checked);
+	const getSelectedMenuPriceTotal = () => {
+		return selectedMenu.reduce(
+			(total, item) => total + item.price * item.quantity,
+			0
+		);
 	};
 
 	return (
 		<div className="p-10">
 			<h2>Create Your Order</h2>
-			<div className="grid grid-cols-3 w-full min-h-[80vh] gap-8 mt-6">
-				<div className="col-span-2 border-2 border-white p-8">
-					<div className="grid grid-cols-4 gap-4">
+			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
+				<div className="col-span-3 border-2 border-white p-8">
+					<div className="flex flex-wrap gap-4">
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
-								className="cursor-pointer"
+								className="cursor-pointer px-3 py-2 rounded-md border-2 border-white"
 								onClick={() => handleMenuClick(item)}>
-								{/* Image */}
-								<div className="border-2 border-white w-32 h-32"></div>
+								<div className="border-2 border-white w-32 h-32 rounded-md"></div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
 								<p className="text-gray-300">Price: ${item.price.toFixed(2)}</p>
 							</div>
 						))}
 					</div>
 				</div>
-				<ul className="border-2 border-white p-8 relative">
-					{selectedMenu.map((item) => (
-						<li key={item.menu_id}>
-							{item.menu_name} x {item.quantity}
-						</li>
-					))}
-					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 left-0 grid grid-cols-2 place-items-center gap-4">
-						<button className="" onClick={handleCreateOrder}>
-							Choose Table
+				<div className="col-span-2 border-2 border-white p-8 relative">
+					<p>{selectedTable?.table_name || "Individual"}</p>
+					<div className="h-[86%] overflow-y-auto">
+						<table className="w-full border-collapse border border-transparent text-left">
+							<thead>
+								<tr>
+									<th className="border-b border-transparent px-4 py-2">
+										Menu
+									</th>
+									<th className="border-b border-transparent px-4 py-2">Qty</th>
+									<th className="border-b border-transparent px-4 py-2">
+										Price
+									</th>
+									<th
+										className="border-b border-transparent px-4 py-2 cursor-pointer text-red-500"
+										onClick={() => setSelectedMenu([])}>
+										Clear
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{selectedMenu.map((item) => (
+									<tr key={item.menu_id}>
+										<td className="border-t border-transparent px-4 py-2">
+											{item.menu_name}
+										</td>
+										<td className="border-t border-transparent px-4 py-2">
+											{item.quantity}
+										</td>
+										<td className="border-t border-transparent px-4 py-2">
+											{item.price * item.quantity}
+										</td>
+										<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+											<button onClick={() => handleRemoveItem(item)}>X</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<div className="border-b-2 border-white my-8"></div>
+						<div className="flex justify-between px-10">
+							<p>Total</p>
+							<p>{getSelectedMenuPriceTotal()}</p>
+						</div>
+					</div>
+
+					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 left-0 grid grid-cols-3 place-items-center gap-4">
+						<button
+							type="button"
+							className=""
+							onClick={() => setIsTableModalOpen(true)}>
+							Table
 						</button>
-						<button className="" onClick={handleCreateOrder}>
-							Confirm
+						<button
+							type="button"
+							className=""
+							onClick={() => setIsPaymentModalOpen(true)}>
+							Payment
+						</button>
+						<button type="submit" className="" onClick={handleCreateOrder}>
+							Order
 						</button>
 					</div>
-				</ul>
+				</div>
 			</div>
+
+			{isTableModalOpen && (
+				<SelectTableModal
+					setSelectedTable={setSelectedTable}
+					onClose={() => setIsTableModalOpen(false)}
+				/>
+			)}
+
+			{isPaymentModalOpen && (
+				<PaymentModal
+					setPaymentMethod={setPaymentMethod}
+					setIsPaid={setIsPaid}
+					onClose={() => setIsPaymentModalOpen(false)}
+				/>
+			)}
 		</div>
 	);
 };
