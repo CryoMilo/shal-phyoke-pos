@@ -13,7 +13,7 @@ const ManageOrder = () => {
 	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
 	async function handleCreateOrder() {
-		if (paymentMethod === "" || selectedMenu.length === 0) {
+		if (selectedMenu.length === 0) {
 			alert("INVALID FIELDS");
 			return;
 		}
@@ -22,7 +22,7 @@ const ManageOrder = () => {
 			{
 				status: "making",
 				paid: isPaid,
-				payment_method: paymentMethod,
+				payment_method: paymentMethod.toLowerCase(),
 				table_id: selectedTable?.id || null,
 				menu_items: selectedMenu,
 			},

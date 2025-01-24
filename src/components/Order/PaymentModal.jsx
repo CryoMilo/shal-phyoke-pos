@@ -4,6 +4,9 @@ import { IoQrCode } from "react-icons/io5";
 
 // eslint-disable-next-line react/prop-types
 const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
+	const CASH = "Cash";
+	const QR = "QR";
+
 	const [activePayment, setActivePayment] = useState("");
 
 	return (
@@ -13,21 +16,21 @@ const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
 				<div className="flex justify-center p-8 gap-8">
 					<div
 						onClick={() => {
-							setActivePayment("cash");
-							setPaymentMethod("cash");
+							setActivePayment(CASH);
+							setPaymentMethod(CASH);
 						}}
 						className={`w-32 h-36 border-2 ${
-							activePayment === "cash" ? "border-yellow-400" : "border-white"
+							activePayment === CASH ? "border-yellow-400" : "border-white"
 						} grid place-items-center`}>
 						<IoMdCash size={35} />
 					</div>
 					<div
 						onClick={() => {
-							setActivePayment("qr");
-							setPaymentMethod("qr");
+							setActivePayment(QR);
+							setPaymentMethod(QR);
 						}}
 						className={`w-32 h-36 ${
-							activePayment === "qr" ? "border-yellow-400" : "border-white"
+							activePayment === QR ? "border-yellow-400" : "border-white"
 						} border-2 border-white grid place-items-center`}>
 						<IoQrCode size={30} />
 					</div>
@@ -35,7 +38,10 @@ const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
 				<div className="mt-4 flex justify-end gap-4">
 					<button
 						className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-						onClick={onClose}>
+						onClick={() => {
+							onClose();
+							setPaymentMethod("");
+						}}>
 						Close
 					</button>
 					<button
