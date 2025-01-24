@@ -29,13 +29,21 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-			<div className="bg-black rounded-lg p-6 w-96 shadow-lg">
+			<div className="bg-black rounded-lg p-6 w-[50%] shadow-lg">
 				<h3 className="text-xl font-semibold mb-4">Select a Table</h3>
 				<div className="w-full min-h-64">
 					{loading ? (
 						<p>Loading tables...</p>
 					) : table.length > 0 ? (
 						<div className="flex flex-wrap justify-center gap-8">
+							<div
+								onClick={() => handleTableClick(null)}
+								className="flex flex-col">
+								<div className="w-16 h-16 border-2 border-white"></div>
+								<div className="w-16 text-center cursor-pointer hover:bg-gray-500 rounded">
+									None
+								</div>
+							</div>
 							{table.map((item) => (
 								<div
 									key={item.table_id}

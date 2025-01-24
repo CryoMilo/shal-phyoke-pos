@@ -1,12 +1,36 @@
+import { useState } from "react";
+import { IoMdCash } from "react-icons/io";
+import { IoQrCode } from "react-icons/io5";
+
 // eslint-disable-next-line react/prop-types
 const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
+	const [activePayment, setActivePayment] = useState("");
+
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
 			<div className="bg-black rounded-lg p-6 w-96 shadow-lg">
 				Select Payment Method
 				<div className="flex justify-center p-8 gap-8">
-					<div className="w-32 h-36 border-2 border-white">Cash</div>
-					<div className="w-32 h-36 border-2 border-white">QR</div>
+					<div
+						onClick={() => {
+							setActivePayment("cash");
+							setPaymentMethod("cash");
+						}}
+						className={`w-32 h-36 border-2 ${
+							activePayment === "cash" ? "border-yellow-400" : "border-white"
+						} grid place-items-center`}>
+						<IoMdCash size={35} />
+					</div>
+					<div
+						onClick={() => {
+							setActivePayment("qr");
+							setPaymentMethod("qr");
+						}}
+						className={`w-32 h-36 ${
+							activePayment === "qr" ? "border-yellow-400" : "border-white"
+						} border-2 border-white grid place-items-center`}>
+						<IoQrCode size={30} />
+					</div>
 				</div>
 				<div className="mt-4 flex justify-end gap-4">
 					<button
@@ -16,7 +40,10 @@ const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
 					</button>
 					<button
 						className="px-4 py-2 bg-green-300 text-black rounded hover:bg-gray-600"
-						onClick={() => setIsPaid(true)}>
+						onClick={() => {
+							setIsPaid(true);
+							onClose(true);
+						}}>
 						Paid
 					</button>
 				</div>

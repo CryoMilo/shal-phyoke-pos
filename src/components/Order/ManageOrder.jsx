@@ -91,7 +91,7 @@ const ManageOrder = () => {
 			<h2>Create Your Order</h2>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
 				<div className="col-span-3 border-2 border-white p-8">
-					<div className="flex flex-wrap gap-4">
+					<div className="flex flex-wrap gap-8">
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
@@ -105,7 +105,20 @@ const ManageOrder = () => {
 					</div>
 				</div>
 				<div className="col-span-2 border-2 border-white p-8 relative">
-					<p>{selectedTable?.table_name || "Individual"}</p>
+					<div className="flex justify-between items-center my-5">
+						<button
+							type="button"
+							className=""
+							onClick={() => setIsTableModalOpen(true)}>
+							{selectedTable?.table_name || "Choose Table"}
+						</button>
+						<button
+							type="button"
+							className=""
+							onClick={() => setIsPaymentModalOpen(true)}>
+							{paymentMethod || "Choose Payment"}
+						</button>
+					</div>
 					<div className="h-[86%] overflow-y-auto">
 						<table className="w-full border-collapse border border-transparent text-left">
 							<thead>
@@ -150,20 +163,8 @@ const ManageOrder = () => {
 						</div>
 					</div>
 
-					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 left-0 grid grid-cols-3 place-items-center gap-4">
-						<button
-							type="button"
-							className=""
-							onClick={() => setIsTableModalOpen(true)}>
-							Table
-						</button>
-						<button
-							type="button"
-							className=""
-							onClick={() => setIsPaymentModalOpen(true)}>
-							Payment
-						</button>
-						<button type="submit" className="" onClick={handleCreateOrder}>
+					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-end items-center gap-4">
+						<button type="submit" className="h-fit" onClick={handleCreateOrder}>
 							Order
 						</button>
 					</div>
