@@ -8,7 +8,6 @@ import Menu from "./pages/Menu";
 import CreateMenu from "./components/Menu/create";
 import EditMenu from "./components/Menu/edit";
 import Order from "./pages/Order";
-import EditOrder from "./components/Order/edit";
 import Table from "./pages/Table";
 import CreateTable from "./components/Table/create";
 import EditTable from "./components/Table/edit";
@@ -45,7 +44,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/order/edit/:orderId",
-		element: <EditOrder />,
+		element: <ManageOrder isEdit />,
 	},
 	{
 		path: "/table",

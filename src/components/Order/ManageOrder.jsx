@@ -2,15 +2,36 @@ import { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
 import SelectTableModal from "./SelectTableModal";
 import PaymentModal from "./PaymentModal";
+import { useParams } from "react-router-dom";
 
-const ManageOrder = () => {
+// eslint-disable-next-line react/prop-types
+const ManageOrder = ({ isEdit }) => {
+	const { orderId } = useParams();
 	const [menu, setMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
-	const [paymentMethod, setPaymentMethod] = useState("");
+	const [paymentMethod, setPaymentMethod] = useState(null);
 	const [isPaid, setIsPaid] = useState(false);
 	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+	const getOrderData = async () => {
+		const { data, error } = await supabase
+			.from("order")
+			.select("*")
+			.eq("id", orderId)
+			.single();
+		if (error) {
+			console.error("Error fetching order:", error.message);
+			return;
+		}
+
+		// Set fields based on fetched data
+		setSelectedMenu(data.menu_items || []);
+		setSelectedTable(data.table.id ? { id: data.table.id } : null);
+		setPaymentMethod(data.payment_method || null);
+		setIsPaid(data.paid || false);
+	};
 
 	async function handleCreateOrder() {
 		if (selectedMenu.length === 0) {
@@ -22,7 +43,7 @@ const ManageOrder = () => {
 			{
 				status: "making",
 				paid: isPaid,
-				payment_method: paymentMethod.toLowerCase(),
+				payment_method: paymentMethod !== null ? paymentMethod : null,
 				table_id: selectedTable?.id || null,
 				menu_items: selectedMenu,
 			},
@@ -36,6 +57,31 @@ const ManageOrder = () => {
 		}
 	}
 
+	const handleUpdateOrder = async () => {
+		if (selectedMenu.length === 0) {
+			alert("INVALID FIELDS");
+			return;
+		}
+
+		const { error } = await supabase
+			.from("order")
+			.update({
+				status: "making",
+				paid: isPaid,
+				payment_method: paymentMethod,
+				table_id: selectedTable?.id || null,
+				menu_items: selectedMenu,
+			})
+			.eq("id", orderId);
+
+		if (error) {
+			console.error("Error updating order:", error);
+			alert("Failed to update order.");
+		} else {
+			alert("Order updated successfully!");
+		}
+	};
+
 	const getMenu = async () => {
 		const { data, error } = await supabase.from("menu").select("*");
 		if (error) {
@@ -47,6 +93,7 @@ const ManageOrder = () => {
 
 	useEffect(() => {
 		getMenu();
+		getOrderData();
 	}, []);
 
 	const handleMenuClick = (item) => {
@@ -112,12 +159,12 @@ const ManageOrder = () => {
 							onClick={() => setIsTableModalOpen(true)}>
 							{selectedTable?.table_name || "Choose Table"}
 						</button>
-						<button
+						{/* <button
 							type="button"
 							className=""
 							onClick={() => setIsPaymentModalOpen(true)}>
 							{paymentMethod || "Choose Payment"}
-						</button>
+						</button> */}
 					</div>
 					<div className="h-[86%] overflow-y-auto">
 						<table className="w-full border-collapse border border-transparent text-left">
@@ -164,9 +211,27 @@ const ManageOrder = () => {
 					</div>
 
 					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-end items-center gap-4">
-						<button type="submit" className="h-fit" onClick={handleCreateOrder}>
-							Order
+						<button
+							type="submit"
+							className="h-fit"
+							onClick={() => setIsPaymentModalOpen(true)}>
+							{paymentMethod || "Payment"}
 						</button>
+						{isEdit ? (
+							<button
+								type="submit"
+								className="h-fit"
+								onClick={handleUpdateOrder}>
+								Confirm
+							</button>
+						) : (
+							<button
+								type="submit"
+								className="h-fit"
+								onClick={handleCreateOrder}>
+								Order
+							</button>
+						)}
 					</div>
 				</div>
 			</div>

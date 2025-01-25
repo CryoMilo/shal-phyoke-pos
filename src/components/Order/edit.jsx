@@ -7,15 +7,13 @@ const EditOrder = () => {
 	const [menu, setMenu] = useState([]);
 	const [table, setTable] = useState([]);
 	const [selectedMenu, setSelectedMenu] = useState([]);
-	const [selectedTable, setSelectedTable] = useState(null);
-	const [paymentMethod, setPaymentMethod] = useState("");
+	const [selectedTable, setSelectedTable] = useState("");
+	const [paymentMethod, setPaymentMethod] = useState(null);
 	const [isPaid, setIsPaid] = useState(false);
 
 	useEffect(() => {
-		// Fetch menu and table data
 		getMenu();
 		getTable();
-		// Fetch existing order data
 		getOrderData();
 	}, []);
 
@@ -43,7 +41,6 @@ const EditOrder = () => {
 			.select("*")
 			.eq("id", orderId)
 			.single();
-
 		if (error) {
 			console.error("Error fetching order:", error.message);
 			return;
