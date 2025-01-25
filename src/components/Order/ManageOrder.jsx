@@ -14,11 +14,12 @@ const ManageOrder = ({ isEdit }) => {
 	const [isPaid, setIsPaid] = useState(false);
 	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+	const [orderStatus, setOrderStatus] = useState("making");
 
 	const getOrderData = async () => {
 		const { data, error } = await supabase
 			.from("order")
-			.select("*")
+			.select("*, table:table_id(*)")
 			.eq("id", orderId)
 			.single();
 		if (error) {
@@ -31,6 +32,9 @@ const ManageOrder = ({ isEdit }) => {
 		setSelectedTable(data.table.id ? { id: data.table.id } : null);
 		setPaymentMethod(data.payment_method || null);
 		setIsPaid(data.paid || false);
+		setOrderStatus(data.status || orderStatus);
+
+		setSelectedTable(data.table);
 	};
 
 	async function handleCreateOrder() {
@@ -44,7 +48,7 @@ const ManageOrder = ({ isEdit }) => {
 				status: "making",
 				paid: isPaid,
 				payment_method: paymentMethod !== null ? paymentMethod : null,
-				table_id: selectedTable?.id || null,
+				table_id: selectedTable?.id,
 				menu_items: selectedMenu,
 			},
 		]);
@@ -66,7 +70,7 @@ const ManageOrder = ({ isEdit }) => {
 		const { error } = await supabase
 			.from("order")
 			.update({
-				status: "making",
+				status: orderStatus,
 				paid: isPaid,
 				payment_method: paymentMethod,
 				table_id: selectedTable?.id || null,
@@ -135,7 +139,7 @@ const ManageOrder = ({ isEdit }) => {
 
 	return (
 		<div className="p-10">
-			<h2>Create Your Order</h2>
+			<h2>{isEdit ? "Edit" : "Order"} Your Order</h2>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
 				<div className="col-span-3 border-2 border-white p-8">
 					<div className="flex flex-wrap gap-8">
@@ -211,12 +215,14 @@ const ManageOrder = ({ isEdit }) => {
 					</div>
 
 					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-end items-center gap-4">
-						<button
-							type="submit"
-							className="h-fit"
-							onClick={() => setIsPaymentModalOpen(true)}>
-							{paymentMethod || "Payment"}
-						</button>
+						{isPaid && (
+							<button
+								type="submit"
+								className="h-fit"
+								onClick={() => setIsPaymentModalOpen(true)}>
+								{paymentMethod || "Payment"}
+							</button>
+						)}
 						{isEdit ? (
 							<button
 								type="submit"

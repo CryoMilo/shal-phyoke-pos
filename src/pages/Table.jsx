@@ -16,7 +16,6 @@ const Table = () => {
 
 	useEffect(() => {
 		getTable();
-		console.log(table);
 	}, []);
 
 	return (

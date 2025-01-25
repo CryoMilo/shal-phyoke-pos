@@ -7,7 +7,7 @@ const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
 	const CASH = "Cash";
 	const QR = "QR";
 
-	const [activePayment, setActivePayment] = useState("");
+	const [activePayment, setActivePayment] = useState(null);
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

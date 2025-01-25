@@ -7,6 +7,22 @@ const Order = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
 
+	const handleUpdateOrder = async (orderId) => {
+		const { error } = await supabase
+			.from("order")
+			.update({
+				status: "completed",
+			})
+			.eq("id", orderId);
+
+		if (error) {
+			console.error("Error updating order:", error);
+			alert("Failed to update order.");
+		} else {
+			alert("Order Completed Successfully!");
+		}
+	};
+
 	useEffect(() => {
 		const fetchOrders = async () => {
 			const { data, error } = await supabase
@@ -54,7 +70,7 @@ const Order = () => {
 							</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody className="text-center">
 						{orders.map((order) => (
 							<tr key={order.id}>
 								<td className="border border-gray-200 px-4 py-2">
@@ -85,13 +101,22 @@ const Order = () => {
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
 									<div className="flex flex-col gap-2">
-										<button>
-											<Link to={`/order/edit/${order.id}`}>Edit</Link>
-										</button>
+										{order.status !== "completed" && (
+											<button>
+												<Link to={`/order/edit/${order.id}`}>Edit</Link>
+											</button>
+										)}
 										{order.paid ? (
-											<button className="bg-blue-400">Complete</button>
+											order.status !== "completed" && (
+												<button
+													type="button"
+													onClick={() => handleUpdateOrder(order.id)}
+													className="bg-blue-400">
+													Complete
+												</button>
+											)
 										) : (
-											<button className="bg-green-500">Payment</button>
+											<p>Unpaid</p>
 										)}
 									</div>
 								</td>
