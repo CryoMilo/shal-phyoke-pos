@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
 import SelectTableModal from "./SelectTableModal";
 import PaymentModal from "./PaymentModal";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const ManageOrder = ({ isEdit }) => {
 	const { orderId } = useParams();
+	const navigate = useNavigate();
 	const [menu, setMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
@@ -59,6 +60,8 @@ const ManageOrder = ({ isEdit }) => {
 		} else {
 			alert("Menu item created successfully!");
 		}
+
+		navigate("/order");
 	}
 
 	const handleUpdateOrder = async () => {
@@ -84,6 +87,8 @@ const ManageOrder = ({ isEdit }) => {
 		} else {
 			alert("Order updated successfully!");
 		}
+
+		navigate("/order");
 	};
 
 	const getMenu = async () => {
@@ -215,14 +220,13 @@ const ManageOrder = ({ isEdit }) => {
 					</div>
 
 					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-end items-center gap-4">
-						{isPaid && (
-							<button
-								type="submit"
-								className="h-fit"
-								onClick={() => setIsPaymentModalOpen(true)}>
-								{paymentMethod || "Payment"}
-							</button>
-						)}
+						<button
+							type="submit"
+							className="h-fit"
+							onClick={() => setIsPaymentModalOpen(true)}>
+							{paymentMethod || "Payment"}
+						</button>
+
 						{isEdit ? (
 							<button
 								type="submit"

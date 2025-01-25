@@ -41,6 +41,27 @@ const Order = () => {
 		fetchOrders();
 	}, []);
 
+	useEffect(() => {
+		const subscription = supabase
+			.channel("orders")
+			.on(
+				"postgres_changes",
+				{ event: "UPDATE", schema: "public", table: "order" },
+				(payload) => {
+					setOrders((prevOrders) =>
+						prevOrders.map((order) =>
+							order.id === payload.new.id ? { ...order, ...payload.new } : order
+						)
+					);
+				}
+			)
+			.subscribe();
+
+		return () => {
+			supabase.removeChannel(subscription);
+		};
+	}, []);
+
 	return (
 		<div>
 			<h2>Order</h2>
