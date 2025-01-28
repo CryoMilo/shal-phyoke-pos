@@ -31,10 +31,9 @@ const ManageOrder = ({ isEdit }) => {
 		// Set fields based on fetched data
 		setSelectedMenu(data.menu_items || []);
 		setSelectedTable(data.table.id ? { id: data.table.id } : null);
-		setPaymentMethod(data.payment_method || null);
+		setPaymentMethod(data.payment_method);
 		setIsPaid(data.paid || false);
 		setOrderStatus(data.status || orderStatus);
-
 		setSelectedTable(data.table);
 	};
 
@@ -255,6 +254,7 @@ const ManageOrder = ({ isEdit }) => {
 
 			{isPaymentModalOpen && (
 				<PaymentModal
+					paymentMethod={paymentMethod}
 					setPaymentMethod={setPaymentMethod}
 					setIsPaid={setIsPaid}
 					onClose={() => setIsPaymentModalOpen(false)}

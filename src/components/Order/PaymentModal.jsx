@@ -1,13 +1,18 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { IoMdCash } from "react-icons/io";
 import { IoQrCode } from "react-icons/io5";
 
-// eslint-disable-next-line react/prop-types
-const PaymentModal = ({ setPaymentMethod, setIsPaid, onClose }) => {
+const PaymentModal = ({
+	paymentMethod,
+	setPaymentMethod,
+	setIsPaid,
+	onClose,
+}) => {
 	const CASH = "Cash";
 	const QR = "QR";
 
-	const [activePayment, setActivePayment] = useState(null);
+	const [activePayment, setActivePayment] = useState(paymentMethod);
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
