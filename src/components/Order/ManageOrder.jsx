@@ -283,8 +283,8 @@ const ManageOrder = ({ isEdit }) => {
 				<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
 			</div>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
-				<div className={`col-span-3 border-2 border-white p-8`}>
-					<div className="flex flex-wrap gap-8">
+				<div className="col-span-3 h-[85vh] overflow-scroll border-2 border-white p-8">
+					<div className="flex flex-wrap gap-8 justify-evenly">
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
@@ -297,16 +297,16 @@ const ManageOrder = ({ isEdit }) => {
 
 								<div className="w-full flex flex-row gap-1 pt-3">
 									<button
-										onClick={() => handleMenuClick(item, true)}
-										className="w-[40%] grid place-items-center px-0 py-2"
+										onClick={() => handleMenuClick(item, false)}
+										className="w-[60%] grid place-items-center px-0 py-2"
 										type="button">
-										<TbPaperBag />
+										<IoIosAdd size={23} />
 									</button>
 									<button
-										className="w-[60%]  grid place-items-center px-0 py-2"
+										className="w-[40%]  grid place-items-center px-0 py-2"
 										type="button"
-										onClick={() => handleMenuClick(item, false)}>
-										<IoIosAdd />
+										onClick={() => handleMenuClick(item, true)}>
+										<TbPaperBag color="white" />
 									</button>
 								</div>
 							</div>
