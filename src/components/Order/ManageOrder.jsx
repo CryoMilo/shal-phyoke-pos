@@ -35,7 +35,7 @@ const ManageOrder = ({ isEdit }) => {
 		setSelectedMenu(data.menu_items || []);
 		setSelectedTable(data.table.id ? { id: data.table.id } : null);
 		setPaymentMethod(data.payment_method);
-		setIsPaid(data.paid || false);
+		setIsPaid(data.paid);
 		setOrderStatus(data.status || orderStatus);
 		setSelectedTable(data.table);
 	};
@@ -343,6 +343,7 @@ const ManageOrder = ({ isEdit }) => {
 									<th className="border-b border-transparent px-4 py-2">
 										Price
 									</th>
+
 									<th
 										className="border-b border-transparent px-4 py-2 cursor-pointer text-red-500"
 										onClick={() => setSelectedMenu([])}>
@@ -365,6 +366,7 @@ const ManageOrder = ({ isEdit }) => {
 												<td className="border-t border-transparent px-4 py-2">
 													{(item.price ?? 0) * item.quantity}
 												</td>
+
 												<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
 													<button onClick={() => handleRemoveItem(item, false)}>
 														X
@@ -392,6 +394,7 @@ const ManageOrder = ({ isEdit }) => {
 												<td className="border-t border-transparent px-4 py-2">
 													{(item.price ?? 0) * item.takeawayQuantity}
 												</td>
+
 												<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
 													<button onClick={() => handleRemoveItem(item, true)}>
 														X

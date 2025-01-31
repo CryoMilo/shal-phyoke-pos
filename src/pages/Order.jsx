@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../utils/supabase";
 import { formatTime } from "../utils/formatTime";
+import { TbPaperBag } from "react-icons/tb";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
@@ -138,18 +139,33 @@ const Order = () => {
 								<td className="border border-gray-200 px-4 py-2">
 									<ul>
 										{order.menu_items.map((item) => (
-											<li key={item.menu_id}>
-												{item.menu_name} x {item.quantity}
-												{item.takeawayQuantity > 0 && (
-													<> | {item.takeawayQuantity} (take-away)</>
+											<React.Fragment key={item.menu_id}>
+												{item.quantity > 0 && (
+													<li>
+														{item.menu_name} x {item.quantity}
+													</li>
 												)}
-											</li>
+												{item.takeawayQuantity > 0 && (
+													<li>
+														<div className="flex justify-center items-center gap-2">
+															<p>
+																{item.menu_name} x {item.takeawayQuantity}{" "}
+															</p>
+															<TbPaperBag
+																className="inline"
+																color="cyan"
+																size={18}
+															/>
+														</div>
+													</li>
+												)}
+											</React.Fragment>
 										))}
 									</ul>
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
 									<div className="flex flex-col gap-2">
-										{order.status !== "completed" && (
+										{!order.paid && (
 											<Link to={`/order/edit/${order.id}`}>
 												<button className="w-full">Edit</button>
 											</Link>
@@ -166,6 +182,14 @@ const Order = () => {
 												</button>
 											)
 										) : (
+											// <button
+											// 	type="button"
+											// 	onClick={() =>
+											// 		handleUpdateOrder(order.id, order.table_id)
+											// 	}
+											// 	className="bg-green-400">
+											// 	Payment
+											// </button>
 											<p>Unpaid</p>
 										)}
 									</div>

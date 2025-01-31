@@ -50,8 +50,8 @@ const PaymentModal = ({
 					<button
 						className="px-4 py-2 bg-green-300 text-black rounded hover:bg-gray-600"
 						onClick={() => {
-							setIsPaid(true);
 							setPaymentMethod(activePayment);
+							setIsPaid(true);
 							onClose(true);
 						}}>
 						Paid
