@@ -197,9 +197,11 @@ const ManageOrder = ({ isEdit }) => {
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
-								className="cursor-pointer px-3 py-2 rounded-md border-2 border-white"
+								className="cursor-pointer px-3 py-3 rounded-md border-2 border-white"
 								onClick={() => handleMenuClick(item)}>
-								<div className="border-2 border-white w-32 h-32 rounded-md"></div>
+								<div className="border-2 border-white w-32 h-32 rounded-md">
+									<img src={item.image} alt="image" className="w-full h-full" />
+								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
 								<p className="text-gray-300">Price: ${item.price.toFixed(2)}</p>
 							</div>
