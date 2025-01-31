@@ -7,7 +7,7 @@ const Order = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
 
-	const handleUpdateOrder = async (orderId) => {
+	const handleUpdateOrder = async (orderId, tableId) => {
 		const { error } = await supabase
 			.from("order")
 			.update({
@@ -20,6 +20,19 @@ const Order = () => {
 			alert("Failed to update order.");
 		} else {
 			alert("Order Completed Successfully!");
+		}
+
+		if (tableId) {
+			const { error: tableError } = await supabase
+				.from("table")
+				.update({ occupied: false })
+				.eq("id", tableId);
+
+			if (tableError) {
+				console.error("Error updating table status:", tableError);
+				alert("Order completed, but failed to update table status.");
+				return;
+			}
 		}
 	};
 
@@ -131,7 +144,9 @@ const Order = () => {
 											order.status !== "completed" && (
 												<button
 													type="button"
-													onClick={() => handleUpdateOrder(order.id)}
+													onClick={() =>
+														handleUpdateOrder(order.id, order.table_id)
+													}
 													className="bg-blue-400">
 													Complete
 												</button>

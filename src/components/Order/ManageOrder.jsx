@@ -3,6 +3,8 @@ import supabase from "../../utils/supabase";
 import SelectTableModal from "./SelectTableModal";
 import PaymentModal from "./PaymentModal";
 import { useNavigate, useParams } from "react-router-dom";
+import { TbPaperBag } from "react-icons/tb";
+import { IoIosAdd } from "react-icons/io";
 
 // eslint-disable-next-line react/prop-types
 const ManageOrder = ({ isEdit }) => {
@@ -151,7 +153,7 @@ const ManageOrder = ({ isEdit }) => {
 		getOrderData();
 	}, []);
 
-	const handleMenuClick = (item) => {
+	const handleMenuClick = (item, takeaway = false) => {
 		setSelectedMenu((prevSelectedMenu) => {
 			const existingItem = prevSelectedMenu.find(
 				(selectedItem) => selectedItem.menu_name === item.menu_name
@@ -160,11 +162,15 @@ const ManageOrder = ({ isEdit }) => {
 			if (existingItem) {
 				return prevSelectedMenu.map((selectedItem) =>
 					selectedItem.menu_name === item.menu_name
-						? { ...selectedItem, quantity: selectedItem.quantity + 1 }
+						? {
+								...selectedItem,
+								quantity: selectedItem.quantity + 1,
+								takeaway: takeaway || selectedItem.takeaway, // Preserve previous takeaway status if not passed
+						  }
 						: selectedItem
 				);
 			} else {
-				return [...prevSelectedMenu, { ...item, quantity: 1 }];
+				return [...prevSelectedMenu, { ...item, quantity: 1, takeaway }];
 			}
 		});
 	};
@@ -197,13 +203,26 @@ const ManageOrder = ({ isEdit }) => {
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
-								className="cursor-pointer px-3 py-3 rounded-md border-2 border-white"
-								onClick={() => handleMenuClick(item)}>
+								className="cursor-pointer px-3 py-3 rounded-md border-2 border-white">
 								<div className="border-2 border-white w-32 h-32 rounded-md">
 									<img src={item.image} alt="image" className="w-full h-full" />
 								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
-								<p className="text-gray-300">Price: ${item.price.toFixed(2)}</p>
+								<p className="text-gray-300">Price: {item.price.toFixed(2)}</p>
+								<div className="w-full flex flex-row gap-1 pt-3">
+									<button
+										onClick={() => handleMenuClick(item, true)}
+										className="w-[40%] grid place-items-center px-0 py-2"
+										type="button">
+										<TbPaperBag />
+									</button>
+									<button
+										className="w-[60%]  grid place-items-center px-0 py-2"
+										type="button"
+										onClick={() => handleMenuClick(item, false)}>
+										<IoIosAdd />
+									</button>
+								</div>
 							</div>
 						))}
 					</div>
