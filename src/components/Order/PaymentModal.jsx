@@ -22,7 +22,6 @@ const PaymentModal = ({
 					<div
 						onClick={() => {
 							setActivePayment(CASH);
-							setPaymentMethod(CASH);
 						}}
 						className={`w-32 h-36 border-2 ${
 							activePayment === CASH ? "border-yellow-400" : "border-white"
@@ -32,7 +31,6 @@ const PaymentModal = ({
 					<div
 						onClick={() => {
 							setActivePayment(QR);
-							setPaymentMethod(QR);
 						}}
 						className={`w-32 h-36 ${
 							activePayment === QR ? "border-yellow-400" : "border-white"
@@ -53,6 +51,7 @@ const PaymentModal = ({
 						className="px-4 py-2 bg-green-300 text-black rounded hover:bg-gray-600"
 						onClick={() => {
 							setIsPaid(true);
+							setPaymentMethod(activePayment);
 							onClose(true);
 						}}>
 						Paid

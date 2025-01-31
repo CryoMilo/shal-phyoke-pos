@@ -79,7 +79,7 @@ const Order = () => {
 		<div className="p-6">
 			<h2 className="text-3xl">Order</h2>
 
-			<div className="flex justify-end">
+			<div className="flex justify-end py-6">
 				<Link to="/order/create">
 					<button className="bg-white text-black">Create Order</button>
 				</Link>

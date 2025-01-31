@@ -5,6 +5,7 @@ import PaymentModal from "./PaymentModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbPaperBag } from "react-icons/tb";
 import { IoIosAdd } from "react-icons/io";
+import { FaChevronLeft } from "react-icons/fa";
 
 // eslint-disable-next-line react/prop-types
 const ManageOrder = ({ isEdit }) => {
@@ -186,8 +187,6 @@ const ManageOrder = ({ isEdit }) => {
 		});
 	};
 
-	console.log(selectedMenu);
-
 	const handleRemoveItem = (item, isTakeaway = false) => {
 		setSelectedMenu((prevSelectedMenu) =>
 			prevSelectedMenu
@@ -274,9 +273,17 @@ const ManageOrder = ({ isEdit }) => {
 
 	return (
 		<div className="p-6">
-			<h2>{isEdit ? "Edit" : "Create"} Your Order</h2>
+			<div className="flex gap-3 items-center">
+				<FaChevronLeft
+					color="white"
+					cursor="pointer"
+					size={22}
+					onClick={() => navigate("/order")}
+				/>
+				<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
+			</div>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
-				<div className="col-span-3 border-2 border-white p-8">
+				<div className={`col-span-3 border-2 border-white p-8`}>
 					<div className="flex flex-wrap gap-8">
 						{menu.map((item) => (
 							<div
@@ -287,6 +294,7 @@ const ManageOrder = ({ isEdit }) => {
 								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
 								<p className="text-gray-300">Price: {item.price.toFixed(2)}</p>
+
 								<div className="w-full flex flex-row gap-1 pt-3">
 									<button
 										onClick={() => handleMenuClick(item, true)}
