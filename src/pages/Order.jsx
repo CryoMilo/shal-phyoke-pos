@@ -150,9 +150,9 @@ const Order = () => {
 								<td className="border border-gray-200 px-4 py-2">
 									<div className="flex flex-col gap-2">
 										{order.status !== "completed" && (
-											<button>
-												<Link to={`/order/edit/${order.id}`}>Edit</Link>
-											</button>
+											<Link to={`/order/edit/${order.id}`}>
+												<button className="w-full">Edit</button>
+											</Link>
 										)}
 										{order.paid ? (
 											order.status !== "completed" && (

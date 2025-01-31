@@ -188,15 +188,33 @@ const ManageOrder = ({ isEdit }) => {
 
 	console.log(selectedMenu);
 
-	const handleRemoveItem = (item) => {
+	const handleRemoveItem = (item, isTakeaway = false) => {
 		setSelectedMenu((prevSelectedMenu) =>
 			prevSelectedMenu
-				.map((selectedItem) =>
-					selectedItem.menu_name === item.menu_name
-						? { ...selectedItem, quantity: selectedItem.quantity - 1 }
-						: selectedItem
+				.map((selectedItem) => {
+					if (selectedItem.menu_name === item.menu_name) {
+						// If removing takeaway, decrease takeawayQuantity
+						if (isTakeaway) {
+							return {
+								...selectedItem,
+								takeawayQuantity: Math.max(
+									0,
+									selectedItem.takeawayQuantity - 1
+								),
+							};
+						}
+						// Otherwise, decrease dine-in quantity
+						return {
+							...selectedItem,
+							quantity: Math.max(0, selectedItem.quantity - 1),
+						};
+					}
+					return selectedItem;
+				})
+				.filter(
+					(selectedItem) =>
+						selectedItem.quantity > 0 || selectedItem.takeawayQuantity > 0
 				)
-				.filter((selectedItem) => selectedItem.quantity > 0)
 		);
 	};
 
@@ -210,7 +228,7 @@ const ManageOrder = ({ isEdit }) => {
 	};
 
 	return (
-		<div className="p-10">
+		<div className="p-6">
 			<h2>{isEdit ? "Edit" : "Order"} Your Order</h2>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
 				<div className="col-span-3 border-2 border-white p-8">
@@ -219,7 +237,7 @@ const ManageOrder = ({ isEdit }) => {
 							<div
 								key={item.menu_id}
 								className="cursor-pointer px-3 py-3 rounded-md border-2 border-white">
-								<div className="border-2 border-white w-32 h-32 rounded-md">
+								<div className="border-2 border-white w-40 h-40 rounded-md">
 									<img src={item.image} alt="image" className="w-full h-full" />
 								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
@@ -242,7 +260,7 @@ const ManageOrder = ({ isEdit }) => {
 						))}
 					</div>
 				</div>
-				<div className="col-span-2 border-2 border-white p-8 relative">
+				<div className="col-span-2 border-2 border-white p-6 relative">
 					<button
 						type="button"
 						className="bg-white flex items-center gap-2 w-full justify-center mb-4"
@@ -262,7 +280,7 @@ const ManageOrder = ({ isEdit }) => {
 					</button>
 
 					<div className="h-[86%] pb-20">
-						<table className="w-full border-collapse border border-transparent text-left">
+						<table className="w-full border-collapse border border-transparent text-left text-lg">
 							<thead>
 								<tr>
 									<th className="border-b border-transparent px-4 py-2">
@@ -305,9 +323,15 @@ const ManageOrder = ({ isEdit }) => {
 										{/* Takeaway row (only if takeawayQuantity > 0) */}
 										{item.takeawayQuantity > 0 && (
 											<tr>
-												<td className="border-t border-transparent px-4 py-2">
-													{item.menu_name}{" "}
-													<span className="text-gray-500">(take-away)</span>
+												<td className="border-t border-transparent px-4 py-2 ">
+													<div className="flex items-center gap-2 flex-wrap">
+														<p>{item.menu_name}</p>
+														<TbPaperBag
+															className="inline"
+															color="cyan"
+															size={18}
+														/>
+													</div>
 												</td>
 												<td className="border-t border-transparent px-4 py-2">
 													{item.takeawayQuantity}
@@ -327,7 +351,7 @@ const ManageOrder = ({ isEdit }) => {
 							</tbody>
 						</table>
 						<div className="border-b-2 border-white my-8"></div>
-						<div className="flex justify-between px-10">
+						<div className="flex justify-between px-16">
 							<p>Total</p>
 							<p>{getSelectedMenuPriceTotal()}</p>
 						</div>
