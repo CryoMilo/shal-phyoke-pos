@@ -53,6 +53,19 @@ const ManageOrder = ({ isEdit }) => {
 			},
 		]);
 
+		if (selectedTable?.id) {
+			const { error: tableError } = await supabase
+				.from("table")
+				.update({ occupied: true })
+				.eq("id", selectedTable.id);
+
+			if (tableError) {
+				console.error("Error updating table status:", tableError);
+				alert("Failed to update table status.");
+				return;
+			}
+		}
+
 		if (error) {
 			console.error("Error creating menu item:", error);
 			alert("Failed to create menu item.");
@@ -69,13 +82,30 @@ const ManageOrder = ({ isEdit }) => {
 			return;
 		}
 
+		// Fetch current order data to check previous table assignment
+		const { data: currentOrder, error: orderFetchError } = await supabase
+			.from("order")
+			.select("table_id")
+			.eq("id", orderId)
+			.single();
+
+		if (orderFetchError) {
+			console.error("Error fetching current order:", orderFetchError);
+			alert("Failed to fetch current order.");
+			return;
+		}
+
+		const previousTableId = currentOrder?.table_id;
+		const newTableId = selectedTable?.id || null;
+
+		// Update order details
 		const { error } = await supabase
 			.from("order")
 			.update({
 				status: orderStatus,
 				paid: isPaid,
 				payment_method: paymentMethod,
-				table_id: selectedTable?.id || null,
+				table_id: newTableId,
 				menu_items: selectedMenu,
 			})
 			.eq("id", orderId);
@@ -83,10 +113,27 @@ const ManageOrder = ({ isEdit }) => {
 		if (error) {
 			console.error("Error updating order:", error);
 			alert("Failed to update order.");
-		} else {
-			alert("Order updated successfully!");
+			return;
 		}
 
+		// Update table occupancy status
+		if (previousTableId && previousTableId !== newTableId) {
+			// Free up the previous table
+			await supabase
+				.from("table")
+				.update({ occupied: false })
+				.eq("id", previousTableId);
+		}
+
+		if (newTableId) {
+			// Mark new table as occupied
+			await supabase
+				.from("table")
+				.update({ occupied: true })
+				.eq("id", newTableId);
+		}
+
+		alert("Order updated successfully!");
 		navigate("/order");
 	};
 
@@ -167,12 +214,6 @@ const ManageOrder = ({ isEdit }) => {
 							onClick={() => setIsTableModalOpen(true)}>
 							{selectedTable?.table_name || "Choose Table"}
 						</button>
-						{/* <button
-							type="button"
-							className=""
-							onClick={() => setIsPaymentModalOpen(true)}>
-							{paymentMethod || "Choose Payment"}
-						</button> */}
 					</div>
 					<div className="h-[86%] overflow-y-auto">
 						<table className="w-full border-collapse border border-transparent text-left">

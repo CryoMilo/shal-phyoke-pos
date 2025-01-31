@@ -66,6 +66,16 @@ export const CreateMenuItem = () => {
 						onChange={(e) => setDescription(e.target.value)}></textarea>
 				</label>
 				<br />
+				<label>
+					Image:
+					<input
+						type="file"
+						id="menu_image"
+						name="menu_image"
+						accept="image/png, image/jpeg"
+					/>
+				</label>
+				<br />
 				<button type="submit">Create</button>
 			</form>
 		</div>

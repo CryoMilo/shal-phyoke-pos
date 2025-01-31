@@ -44,14 +44,15 @@ const CreateTable = () => {
 					/>
 				</label>
 				<br />
-				{/* <label>
-					Occupied:
+				<label>
+					Image:
 					<input
-						type="checkbox"
-						checked={occupied}
-						onChange={(e) => setOccupied(e.target.checked)}
+						type="file"
+						id="table_image"
+						name="table_image"
+						accept="image/png, image/jpeg"
 					/>
-				</label> */}
+				</label>
 				<br />
 				<button type="submit">Create</button>
 			</form>

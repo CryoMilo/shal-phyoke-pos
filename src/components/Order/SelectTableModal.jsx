@@ -23,6 +23,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 	}, []);
 
 	const handleTableClick = (item) => {
+		if (item?.occupied) return; // Prevent selecting occupied tables
 		setSelectedTable(item);
 		onClose();
 	};
@@ -48,9 +49,26 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 								<div
 									key={item.table_id}
 									onClick={() => handleTableClick(item)}
-									className="flex flex-col">
-									<div className="w-16 h-16 border-2 border-white"></div>
-									<div className="w-16 text-center cursor-pointer hover:bg-gray-500 rounded">
+									className={`flex flex-col ${
+										item.occupied ? "opacity-50 cursor-not-allowed" : ""
+									}`}>
+									<div
+										className={`w-16 h-16 border-4 rounded-md ${
+											item.occupied
+												? "border-gray-500 bg-gray-700"
+												: "border-white bg-white cursor-pointer"
+										}`}>
+										<img
+											src={item.image_url}
+											alt="table_image"
+											className="w-full h-full"
+										/>
+									</div>
+
+									<div
+										className={`w-16 text-center ${
+											item.occupied ? "text-gray-500" : "cursor-pointer"
+										}`}>
 										{item.table_name}
 									</div>
 								</div>
