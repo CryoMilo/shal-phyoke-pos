@@ -11,7 +11,7 @@ import Order from "./pages/Order";
 import Table from "./pages/Table";
 import CreateTable from "./components/Table/create";
 import EditTable from "./components/Table/edit";
-import ManageOrder from "./components/Order/manageOrder";
+import ManageOrder from "./components/Order/ManageOrder";
 
 const router = createBrowserRouter([
 	{
