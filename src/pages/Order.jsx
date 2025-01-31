@@ -41,7 +41,7 @@ const Order = () => {
 			const { data, error } = await supabase
 				.from("order")
 				.select("*, table:table_id(*)")
-				.order("created_at", { ascending: false });
+				.order("created_at", { ascending: true });
 
 			if (error) {
 				console.error("Error fetching orders:", error);
@@ -93,9 +93,7 @@ const Order = () => {
 						<tr>
 							<th className="border border-gray-200 px-4 py-2">Status</th>
 							<th className="border border-gray-200 px-4 py-2">Paid</th>
-							<th className="border border-gray-200 px-4 py-2">
-								Payment Method
-							</th>
+							<th className="border border-gray-200 px-4 py-2">Payment</th>
 							<th className="border border-gray-200 px-4 py-2">Table</th>
 							<th className="border border-gray-200 px-4 py-2">Created At</th>
 							<th className="border border-gray-200 px-4 py-2">Items</th>
@@ -117,20 +115,36 @@ const Order = () => {
 									{order.payment_method}
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
-									{order.table && order.table.table_name}
+									{order.table && (
+										<div className="bg-white rounded-md flex items-center gap-2 justify-center mb-4">
+											<p className="text-black">
+												{order?.table.table_name || "Choose Table"}
+											</p>
+											{order?.table.image_url ? (
+												<div className="w-6 h-6">
+													<img
+														src={order?.table.image_url}
+														alt="table_image"
+														className="w-full h-full rounded-md"
+													/>
+												</div>
+											) : null}
+										</div>
+									)}
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
 									{formatTime(order.created_at)}
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
 									<ul>
-										{order.menu_items.map((item) => {
-											return (
-												<li key={item.menu_id}>
-													{item.menu_name} x {item.quantity}
-												</li>
-											);
-										})}
+										{order.menu_items.map((item) => (
+											<li key={item.menu_id}>
+												{item.menu_name} x {item.quantity}
+												{item.takeawayQuantity > 0 && (
+													<> | {item.takeawayQuantity} (take-away)</>
+												)}
+											</li>
+										))}
 									</ul>
 								</td>
 								<td className="border border-gray-200 px-4 py-2">
