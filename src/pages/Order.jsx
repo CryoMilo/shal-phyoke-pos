@@ -76,12 +76,12 @@ const Order = () => {
 	}, []);
 
 	return (
-		<div>
-			<h2>Order</h2>
+		<div className="p-6">
+			<h2 className="text-3xl">Order</h2>
 
-			<div className="flex flex-col gap-3 my-9">
-				<Link to="/order/create" className="text-blue-600">
-					Create Order
+			<div className="flex justify-end">
+				<Link to="/order/create">
+					<button className="bg-white text-black">Create Order</button>
 				</Link>
 			</div>
 

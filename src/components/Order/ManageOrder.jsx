@@ -227,9 +227,54 @@ const ManageOrder = ({ isEdit }) => {
 		);
 	};
 
+	const handleDeleteOrder = async () => {
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete this order?"
+		);
+		if (!confirmDelete) return;
+
+		// Fetch current order data to check assigned table
+		const { data: currentOrder, error: orderFetchError } = await supabase
+			.from("order")
+			.select("table_id")
+			.eq("id", orderId)
+			.single();
+
+		if (orderFetchError) {
+			console.error("Error fetching current order:", orderFetchError);
+			alert("Failed to fetch current order.");
+			return;
+		}
+
+		const tableId = currentOrder?.table_id;
+
+		// Delete the order
+		const { error: deleteError } = await supabase
+			.from("order")
+			.delete()
+			.eq("id", orderId);
+
+		if (deleteError) {
+			console.error("Error deleting order:", deleteError);
+			alert("Failed to delete order.");
+			return;
+		}
+
+		// Free up the table if it was assigned
+		if (tableId) {
+			await supabase
+				.from("table")
+				.update({ occupied: false })
+				.eq("id", tableId);
+		}
+
+		alert("Order deleted successfully!");
+		navigate("/order");
+	};
+
 	return (
 		<div className="p-6">
-			<h2>{isEdit ? "Edit" : "Order"} Your Order</h2>
+			<h2>{isEdit ? "Edit" : "Create"} Your Order</h2>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
 				<div className="col-span-3 border-2 border-white p-8">
 					<div className="flex flex-wrap gap-8">
@@ -357,29 +402,41 @@ const ManageOrder = ({ isEdit }) => {
 						</div>
 					</div>
 
-					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-end items-center gap-4">
-						<button
-							type="submit"
-							className="h-fit"
-							onClick={() => setIsPaymentModalOpen(true)}>
-							{paymentMethod || "Payment"}
-						</button>
-
+					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-between items-center gap-4">
 						{isEdit ? (
 							<button
 								type="submit"
-								className="h-fit"
-								onClick={handleUpdateOrder}>
-								Confirm
+								className="h-fit bg-red-500 text-black"
+								onClick={() => handleDeleteOrder()}>
+								Delete
 							</button>
 						) : (
+							<div className="invisible"></div>
+						)}
+						<div className="flex items-center gap-4">
 							<button
 								type="submit"
 								className="h-fit"
-								onClick={handleCreateOrder}>
-								Order
+								onClick={() => setIsPaymentModalOpen(true)}>
+								{paymentMethod || "Payment"}
 							</button>
-						)}
+
+							{isEdit ? (
+								<button
+									type="submit"
+									className="h-fit"
+									onClick={handleUpdateOrder}>
+									Confirm
+								</button>
+							) : (
+								<button
+									type="submit"
+									className="h-fit"
+									onClick={handleCreateOrder}>
+									Order
+								</button>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
