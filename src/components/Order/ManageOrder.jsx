@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
 import SelectTableModal from "./SelectTableModal";
 import PaymentModal from "./PaymentModal";
@@ -153,7 +153,7 @@ const ManageOrder = ({ isEdit }) => {
 		getOrderData();
 	}, []);
 
-	const handleMenuClick = (item, takeaway = false) => {
+	const handleMenuClick = (item, isTakeaway = false) => {
 		setSelectedMenu((prevSelectedMenu) => {
 			const existingItem = prevSelectedMenu.find(
 				(selectedItem) => selectedItem.menu_name === item.menu_name
@@ -164,16 +164,29 @@ const ManageOrder = ({ isEdit }) => {
 					selectedItem.menu_name === item.menu_name
 						? {
 								...selectedItem,
-								quantity: selectedItem.quantity + 1,
-								takeaway: takeaway || selectedItem.takeaway, // Preserve previous takeaway status if not passed
+								quantity: isTakeaway
+									? selectedItem.quantity
+									: selectedItem.quantity + 1, // Increment dine-in quantity
+								takeawayQuantity: isTakeaway
+									? (selectedItem.takeawayQuantity || 0) + 1
+									: selectedItem.takeawayQuantity || 0, // Increment takeaway quantity
 						  }
 						: selectedItem
 				);
 			} else {
-				return [...prevSelectedMenu, { ...item, quantity: 1, takeaway }];
+				return [
+					...prevSelectedMenu,
+					{
+						...item,
+						quantity: isTakeaway ? 0 : 1, // If takeaway, set dine-in quantity to 0
+						takeawayQuantity: isTakeaway ? 1 : 0, // If dine-in, set takeawayQuantity to 0
+					},
+				];
 			}
 		});
 	};
+
+	console.log(selectedMenu);
 
 	const handleRemoveItem = (item) => {
 		setSelectedMenu((prevSelectedMenu) =>
@@ -189,7 +202,9 @@ const ManageOrder = ({ isEdit }) => {
 
 	const getSelectedMenuPriceTotal = () => {
 		return selectedMenu.reduce(
-			(total, item) => total + item.price * item.quantity,
+			(total, item) =>
+				total +
+				(item.price ?? 0) * (item.quantity + (item.takeawayQuantity ?? 0)),
 			0
 		);
 	};
@@ -228,15 +243,25 @@ const ManageOrder = ({ isEdit }) => {
 					</div>
 				</div>
 				<div className="col-span-2 border-2 border-white p-8 relative">
-					<div className="flex justify-between items-center my-5">
-						<button
-							type="button"
-							className=""
-							onClick={() => setIsTableModalOpen(true)}>
+					<button
+						type="button"
+						className="bg-white flex items-center gap-2 w-full justify-center mb-4"
+						onClick={() => setIsTableModalOpen(true)}>
+						<p className="text-black">
 							{selectedTable?.table_name || "Choose Table"}
-						</button>
-					</div>
-					<div className="h-[86%] overflow-y-auto">
+						</p>
+						{selectedTable?.image_url ? (
+							<div className="w-6 h-6">
+								<img
+									src={selectedTable?.image_url}
+									alt="table_image"
+									className="w-full h-full rounded-md"
+								/>
+							</div>
+						) : null}
+					</button>
+
+					<div className="h-[86%] pb-20">
 						<table className="w-full border-collapse border border-transparent text-left">
 							<thead>
 								<tr>
@@ -256,20 +281,48 @@ const ManageOrder = ({ isEdit }) => {
 							</thead>
 							<tbody>
 								{selectedMenu.map((item) => (
-									<tr key={item.menu_id}>
-										<td className="border-t border-transparent px-4 py-2">
-											{item.menu_name}
-										</td>
-										<td className="border-t border-transparent px-4 py-2">
-											{item.quantity}
-										</td>
-										<td className="border-t border-transparent px-4 py-2">
-											{item.price * item.quantity}
-										</td>
-										<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
-											<button onClick={() => handleRemoveItem(item)}>X</button>
-										</td>
-									</tr>
+									<React.Fragment key={item.menu_id}>
+										{/* Dine-in row (only if quantity > 0) */}
+										{item.quantity > 0 && (
+											<tr>
+												<td className="border-t border-transparent px-4 py-2">
+													{item.menu_name}
+												</td>
+												<td className="border-t border-transparent px-4 py-2">
+													{item.quantity}
+												</td>
+												<td className="border-t border-transparent px-4 py-2">
+													{(item.price ?? 0) * item.quantity}
+												</td>
+												<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+													<button onClick={() => handleRemoveItem(item, false)}>
+														X
+													</button>
+												</td>
+											</tr>
+										)}
+
+										{/* Takeaway row (only if takeawayQuantity > 0) */}
+										{item.takeawayQuantity > 0 && (
+											<tr>
+												<td className="border-t border-transparent px-4 py-2">
+													{item.menu_name}{" "}
+													<span className="text-gray-500">(take-away)</span>
+												</td>
+												<td className="border-t border-transparent px-4 py-2">
+													{item.takeawayQuantity}
+												</td>
+												<td className="border-t border-transparent px-4 py-2">
+													{(item.price ?? 0) * item.takeawayQuantity}
+												</td>
+												<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+													<button onClick={() => handleRemoveItem(item, true)}>
+														X
+													</button>
+												</td>
+											</tr>
+										)}
+									</React.Fragment>
 								))}
 							</tbody>
 						</table>

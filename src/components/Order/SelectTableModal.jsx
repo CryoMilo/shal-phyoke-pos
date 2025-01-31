@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
+import { MdOutlineDoNotDisturbAlt } from "react-icons/md";
 
 // eslint-disable-next-line react/prop-types
 const SelectTableModal = ({ setSelectedTable, onClose }) => {
@@ -39,11 +40,11 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 						<div className="flex flex-wrap justify-center gap-8">
 							<div
 								onClick={() => handleTableClick(null)}
-								className="flex flex-col">
-								<div className="w-16 h-16 border-2 border-white"></div>
-								<div className="w-16 text-center cursor-pointer hover:bg-gray-500 rounded">
-									None
+								className="flex flex-col cursor-pointer">
+								<div className="w-16 h-16 grid place-items-center rounded-md border-2 border-white bg-white">
+									<MdOutlineDoNotDisturbAlt color="black" size={40} />
 								</div>
+								<div className="w-16 text-center">None</div>
 							</div>
 							{table.map((item) => (
 								<div
