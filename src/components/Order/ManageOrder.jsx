@@ -227,11 +227,6 @@ const ManageOrder = ({ isEdit }) => {
 	};
 
 	const handleDeleteOrder = async () => {
-		const confirmDelete = window.confirm(
-			"Are you sure you want to delete this order?"
-		);
-		if (!confirmDelete) return;
-
 		// Fetch current order data to check assigned table
 		const { data: currentOrder, error: orderFetchError } = await supabase
 			.from("order")
