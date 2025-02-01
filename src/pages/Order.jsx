@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 import supabase from "../utils/supabase";
 import { formatTime } from "../utils/formatTime";
 import { TbPaperBag } from "react-icons/tb";
+import { subscribeToOrders } from "../utils/orderSubscription";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [showAll, setShowAll] = useState(false); // Track whether to show all orders
 
 	const handleUpdateOrder = async (orderId, tableId) => {
 		const { error } = await supabase
 			.from("order")
-			.update({
-				status: "completed",
-			})
+			.update({ status: "completed" })
 			.eq("id", orderId);
 
 		if (error) {
@@ -32,17 +32,21 @@ const Order = () => {
 			if (tableError) {
 				console.error("Error updating table status:", tableError);
 				alert("Order completed, but failed to update table status.");
-				return;
 			}
 		}
 	};
 
 	const fetchOrders = async () => {
-		const { data, error } = await supabase
+		let query = supabase
 			.from("order")
 			.select("*, table:table_id(*)")
 			.order("created_at", { ascending: true });
 
+		if (!showAll) {
+			query = query.neq("status", "completed"); // Exclude completed orders when showAll is false
+		}
+
+		const { data, error } = await query;
 		if (error) {
 			console.error("Error fetching orders:", error);
 		} else {
@@ -53,50 +57,18 @@ const Order = () => {
 
 	useEffect(() => {
 		fetchOrders();
-	}, []);
-
-	useEffect(() => {
-		const subscription = supabase
-			.channel("orders")
-			.on(
-				"postgres_changes",
-				{ event: "UPDATE", schema: "public", table: "order" },
-				(payload) => {
-					setOrders((prevOrders) =>
-						prevOrders.map((order) =>
-							order.id === payload.new.id ? { ...order, ...payload.new } : order
-						)
-					);
-				}
-			)
-			.on(
-				"postgres_changes",
-				{ event: "INSERT", schema: "public", table: "order" },
-				(payload) => {
-					setOrders((prevOrders) => [...prevOrders, payload.new]);
-				}
-			)
-			.on(
-				"postgres_changes",
-				{ event: "DELETE", schema: "public", table: "order" },
-				(payload) => {
-					setOrders((prevOrders) =>
-						prevOrders.filter((order) => order.id !== payload.old.id)
-					);
-				}
-			)
-			.subscribe();
-
-		return () => {
-			supabase.removeChannel(subscription);
-		};
-	}, []);
+		const unsubscribe = subscribeToOrders(setOrders);
+		return () => unsubscribe();
+	}, [showAll]); // Re-fetch orders when showAll changes
 
 	return (
 		<div className="p-6">
 			<h2 className="text-3xl">Order</h2>
 
-			<div className="flex justify-end py-6">
+			<div className="flex justify-between py-6">
+				<button onClick={() => setShowAll((prev) => !prev)}>
+					{showAll ? "Show Pending" : "Show All"}
+				</button>
 				<Link to="/order/create">
 					<button className="bg-white text-black">Create Order</button>
 				</Link>
@@ -108,23 +80,17 @@ const Order = () => {
 				<table className="table-auto border-collapse border border-gray-200 w-full">
 					<thead>
 						<tr>
-							<th className="border border-gray-200 px-4 py-2">Status</th>
 							<th className="border border-gray-200 px-4 py-2">Paid</th>
 							<th className="border border-gray-200 px-4 py-2">Payment</th>
 							<th className="border border-gray-200 px-4 py-2">Table</th>
 							<th className="border border-gray-200 px-4 py-2">Created At</th>
 							<th className="border border-gray-200 px-4 py-2">Items</th>
-							<th className="border border-gray-200 px-4 py-2">
-								Action Buttons
-							</th>
+							<th className="border border-gray-200 px-4 py-2">Action</th>
 						</tr>
 					</thead>
 					<tbody className="text-center">
 						{orders.map((order) => (
 							<tr key={order.id}>
-								<td className="border border-gray-200 px-4 py-2">
-									{order.status}
-								</td>
 								<td className="border border-gray-200 px-4 py-2">
 									{order.paid ? "Yes" : "No"}
 								</td>
@@ -137,7 +103,7 @@ const Order = () => {
 											<p className="text-black">
 												{order?.table.table_name || "Choose Table"}
 											</p>
-											{order?.table.image_url ? (
+											{order?.table.image_url && (
 												<div className="w-6 h-6">
 													<img
 														src={order?.table.image_url}
@@ -145,7 +111,7 @@ const Order = () => {
 														className="w-full h-full rounded-md"
 													/>
 												</div>
-											) : null}
+											)}
 										</div>
 									)}
 								</td>
@@ -198,14 +164,6 @@ const Order = () => {
 												</button>
 											)
 										) : (
-											// <button
-											// 	type="button"
-											// 	onClick={() =>
-											// 		handleUpdateOrder(order.id, order.table_id)
-											// 	}
-											// 	className="bg-green-400">
-											// 	Payment
-											// </button>
 											<p>Unpaid</p>
 										)}
 									</div>
