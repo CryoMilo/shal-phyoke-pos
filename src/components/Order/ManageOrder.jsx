@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
 import SelectTableModal from "./SelectTableModal";
-import PaymentModal from "./PaymentModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbPaperBag } from "react-icons/tb";
 import { IoIosAdd } from "react-icons/io";
@@ -13,11 +12,9 @@ const ManageOrder = ({ isEdit }) => {
 	const { orderId } = useParams();
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState([]);
-	const [paymentMethod, setPaymentMethod] = useState("");
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
 	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
-	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 	const [orderStatus, setOrderStatus] = useState("making");
 
 	const getOrderData = async () => {
@@ -35,7 +32,6 @@ const ManageOrder = ({ isEdit }) => {
 		setSelectedMenu(data.menu_items || []);
 		setSelectedTable(data.table.id ? { id: data.table.id } : null);
 		setOrderStatus(data.status || orderStatus);
-		setPaymentMethod(data.payment_method || "");
 		setSelectedTable(data.table);
 	};
 
@@ -50,6 +46,8 @@ const ManageOrder = ({ isEdit }) => {
 				status: "making",
 				table_id: selectedTable?.id,
 				menu_items: selectedMenu,
+				paid: false,
+				payment_method: null,
 			},
 		]);
 
@@ -264,13 +262,13 @@ const ManageOrder = ({ isEdit }) => {
 				<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
 			</div>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
-				<div className="col-span-3 h-[85vh] overflow-scroll border-2 border-white p-8">
-					<div className="flex flex-wrap gap-8 justify-evenly">
+				<div className="col-span-3 h-[85vh] overflow-scroll p-4">
+					<div className="grid grid-cols-3 gap-4">
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
-								className="cursor-pointer px-3 py-3 rounded-md border-2 border-white">
-								<div className="border-2 border-white w-40 h-40 rounded-md">
+								className="w-fit px-3 py-3 rounded-md border border-gray-400">
+								<div className="border-2 border-white w-40 h-40 rounded-md overflow-hidden">
 									<img src={item.image} alt="image" className="w-full h-full" />
 								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
@@ -279,12 +277,12 @@ const ManageOrder = ({ isEdit }) => {
 								<div className="w-full flex flex-row gap-1 pt-3">
 									<button
 										onClick={() => handleMenuClick(item, false)}
-										className="w-[60%] grid place-items-center px-0 py-2"
+										className="w-[60%] bg-yellow-300 hover:bg-yellow-600 border-white text-black grid place-items-center px-0 py-2"
 										type="button">
 										<IoIosAdd size={23} />
 									</button>
 									<button
-										className="w-[40%]  grid place-items-center px-0 py-2"
+										className="w-[40%] border-white grid place-items-center px-0 py-2"
 										type="button"
 										onClick={() => handleMenuClick(item, true)}>
 										<TbPaperBag color="white" />
