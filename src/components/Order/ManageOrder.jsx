@@ -6,16 +6,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { TbPaperBag } from "react-icons/tb";
 import { IoIosAdd } from "react-icons/io";
 import { FaChevronLeft } from "react-icons/fa";
+import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 
 // eslint-disable-next-line react/prop-types
 const ManageOrder = ({ isEdit }) => {
 	const { orderId } = useParams();
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState([]);
+	const [paymentMethod, setPaymentMethod] = useState("");
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
-	const [paymentMethod, setPaymentMethod] = useState(null);
-	const [isPaid, setIsPaid] = useState(false);
 	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 	const [orderStatus, setOrderStatus] = useState("making");
@@ -34,9 +34,8 @@ const ManageOrder = ({ isEdit }) => {
 		// Set fields based on fetched data
 		setSelectedMenu(data.menu_items || []);
 		setSelectedTable(data.table.id ? { id: data.table.id } : null);
-		setPaymentMethod(data.payment_method);
-		setIsPaid(data.paid);
 		setOrderStatus(data.status || orderStatus);
+		setPaymentMethod(data.payment_method || "");
 		setSelectedTable(data.table);
 	};
 
@@ -49,8 +48,6 @@ const ManageOrder = ({ isEdit }) => {
 		const { error } = await supabase.from("order").insert([
 			{
 				status: "making",
-				paid: isPaid,
-				payment_method: paymentMethod !== null ? paymentMethod : null,
 				table_id: selectedTable?.id,
 				menu_items: selectedMenu,
 			},
@@ -106,8 +103,6 @@ const ManageOrder = ({ isEdit }) => {
 			.from("order")
 			.update({
 				status: orderStatus,
-				paid: isPaid,
-				payment_method: paymentMethod,
 				table_id: newTableId,
 				menu_items: selectedMenu,
 			})
@@ -214,15 +209,6 @@ const ManageOrder = ({ isEdit }) => {
 					(selectedItem) =>
 						selectedItem.quantity > 0 || selectedItem.takeawayQuantity > 0
 				)
-		);
-	};
-
-	const getSelectedMenuPriceTotal = () => {
-		return selectedMenu.reduce(
-			(total, item) =>
-				total +
-				(item.price ?? 0) * (item.quantity + (item.takeawayQuantity ?? 0)),
-			0
 		);
 	};
 
@@ -404,7 +390,7 @@ const ManageOrder = ({ isEdit }) => {
 						<div className="border-b-2 border-white my-8"></div>
 						<div className="flex justify-between px-16">
 							<p>Total</p>
-							<p>{getSelectedMenuPriceTotal()}</p>
+							<p>{getMenuPriceTotal(selectedMenu)}</p>
 						</div>
 					</div>
 
@@ -420,13 +406,6 @@ const ManageOrder = ({ isEdit }) => {
 							<div className="invisible"></div>
 						)}
 						<div className="flex items-center gap-4">
-							<button
-								type="submit"
-								className="h-fit"
-								onClick={() => setIsPaymentModalOpen(true)}>
-								{paymentMethod || "Payment"}
-							</button>
-
 							{isEdit ? (
 								<button
 									type="submit"
@@ -451,15 +430,6 @@ const ManageOrder = ({ isEdit }) => {
 				<SelectTableModal
 					setSelectedTable={setSelectedTable}
 					onClose={() => setIsTableModalOpen(false)}
-				/>
-			)}
-
-			{isPaymentModalOpen && (
-				<PaymentModal
-					paymentMethod={paymentMethod}
-					setPaymentMethod={setPaymentMethod}
-					setIsPaid={setIsPaid}
-					onClose={() => setIsPaymentModalOpen(false)}
 				/>
 			)}
 		</div>

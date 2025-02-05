@@ -2,17 +2,27 @@
 import { useState } from "react";
 import { IoMdCash } from "react-icons/io";
 import { IoQrCode } from "react-icons/io5";
+import supabase from "../../utils/supabase";
 
-const PaymentModal = ({
-	paymentMethod,
-	setPaymentMethod,
-	setIsPaid,
-	onClose,
-}) => {
+const PaymentModal = ({ orderId, onClose }) => {
 	const CASH = "Cash";
 	const QR = "QR";
 
-	const [activePayment, setActivePayment] = useState(paymentMethod);
+	const [activePayment, setActivePayment] = useState();
+
+	const handlePayment = async () => {
+		const { error } = await supabase
+			.from("order")
+			.update({ paid: true, payment_method: activePayment })
+			.eq("id", orderId);
+
+		if (error) {
+			console.error("Error updating order:", error);
+			alert("Failed to update payment. Try again.");
+		} else {
+			onClose(true);
+		}
+	};
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -43,15 +53,14 @@ const PaymentModal = ({
 						className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
 						onClick={() => {
 							onClose();
-							setPaymentMethod("");
+							setActivePayment("");
 						}}>
 						Close
 					</button>
 					<button
 						className="px-4 py-2 bg-green-300 text-black rounded hover:bg-gray-600"
 						onClick={() => {
-							setPaymentMethod(activePayment);
-							setIsPaid(true);
+							handlePayment();
 							onClose(true);
 						}}>
 						Paid
