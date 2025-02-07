@@ -1,5 +1,118 @@
-const ManageMenu = () => {
-	return <div>ManageMenu</div>;
-};
+import { useState } from "react";
+import supabase from "../../utils/supabase";
 
-export default ManageMenu;
+export const ManageMenu = () => {
+	const [menuName, setMenuName] = useState("");
+	const [price, setPrice] = useState(0);
+	const [description, setDescription] = useState("");
+	const [image, setImage] = useState(null);
+
+	async function handleCreateMenuItem() {
+		if (!menuName || price <= 0) {
+			alert("Menu name and valid price are required.");
+			return;
+		}
+
+		// If there is an image, upload it
+		let imageUrl = null;
+		if (image) {
+			// Upload image to Supabase Storage
+			const fileExtension = image.name.split(".").pop();
+			const fileName = `${menuName}-${Date.now()}.${fileExtension}`;
+			const { data, error: uploadError } = await supabase.storage
+				.from("menu") // Change this to your actual bucket name
+				.upload(fileName, image, { upsert: true, public: true });
+
+			if (uploadError) {
+				console.error("Error uploading image:", uploadError);
+				alert("Failed to upload image.");
+				return;
+			}
+
+			// Get the public URL of the uploaded image
+			const {
+				data: { publicUrl },
+				error: urlError,
+			} = supabase.storage.from("menu").getPublicUrl(data.path);
+
+			if (urlError) {
+				console.error("Error getting image URL:", urlError);
+				alert("Failed to get image URL.");
+				return;
+			}
+			imageUrl = publicUrl;
+		}
+
+		// Insert menu item into the "menu" table
+		const { error } = await supabase.from("menu").insert([
+			{
+				menu_name: menuName,
+				price,
+				description,
+				image: imageUrl, // Store the image URL in the "image" field
+			},
+		]);
+
+		if (error) {
+			console.error("Error creating menu item:", error);
+			alert("Failed to create menu item.");
+		} else {
+			alert("Menu item created successfully!");
+			setMenuName("");
+			setPrice(0);
+			setDescription("");
+			setImage(null); // Reset the image state
+		}
+	}
+
+	return (
+		<div>
+			<h2>Create Menu Item</h2>
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleCreateMenuItem();
+				}}>
+				<label>
+					Menu Name:
+					<input
+						type="text"
+						value={menuName}
+						onChange={(e) => setMenuName(e.target.value)}
+						required
+					/>
+				</label>
+				<br />
+				<label>
+					Price:
+					<input
+						type="number"
+						value={price}
+						onChange={(e) => setPrice(parseFloat(e.target.value))}
+						required
+					/>
+				</label>
+				<br />
+				<label>
+					Description:
+					<textarea
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}></textarea>
+				</label>
+				<br />
+				<label>
+					Image:
+					<input
+						type="file"
+						id="menu_image"
+						name="menu_image"
+						accept="image/png, image/jpeg"
+						onChange={(e) => setImage(e.target.files[0])}
+					/>
+				</label>
+				<br />
+				<button type="submit">Create</button>
+			</form>
+		</div>
+	);
+};

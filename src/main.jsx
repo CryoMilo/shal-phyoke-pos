@@ -5,13 +5,12 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
-import CreateMenu from "./components/Menu/create";
-import EditMenu from "./components/Menu/edit";
 import Order from "./pages/Order";
 import Table from "./pages/Table";
 import CreateTable from "./components/Table/create";
 import EditTable from "./components/Table/edit";
 import ManageOrder from "./components/Order/ManageOrder";
+import { ManageMenu } from "./components/Menu/ManageMenu";
 
 const router = createBrowserRouter([
 	{
@@ -28,11 +27,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/menu/create",
-		element: <CreateMenu />,
+		element: <ManageMenu />,
 	},
 	{
 		path: "/menu/edit",
-		element: <EditMenu />,
+		element: <ManageMenu />,
 	},
 	{
 		path: "/order",
