@@ -7,10 +7,9 @@ import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Order from "./pages/Order";
 import Table from "./pages/Table";
-import CreateTable from "./components/Table/create";
-import EditTable from "./components/Table/edit";
 import ManageOrder from "./components/Order/ManageOrder";
 import { ManageMenu } from "./components/Menu/ManageMenu";
+import ManageTable from "./components/Table/ManageTable";
 
 const router = createBrowserRouter([
 	{
@@ -51,11 +50,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/table/create",
-		element: <CreateTable />,
+		element: <ManageTable />,
 	},
 	{
 		path: "/table/edit",
-		element: <EditTable />,
+		element: <ManageTable />,
 	},
 ]);
 
