@@ -1,0 +1,31 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import supabase from "../../utils/supabase";
+
+const MenuList = () => {
+	const [menu, setMenu] = useState([]);
+
+	const getMenu = async () => {
+		const { data, error } = await supabase.from("menu").select("*");
+		if (error) {
+			console.error("Error fetching menu:", error.message);
+			return;
+		}
+		setMenu(data);
+	};
+
+	useEffect(() => {
+		getMenu();
+	}, []);
+
+	return (
+		<ul>
+			{menu.map((item) => (
+				<li key={item.menu_id}>{item.menu_name}</li>
+			))}
+			<Link to="/menu/create">Create Menu</Link>
+		</ul>
+	);
+};
+
+export default MenuList;
