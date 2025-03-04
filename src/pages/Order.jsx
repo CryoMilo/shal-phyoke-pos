@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import supabase from "../utils/supabase";
 import { subscribeToOrders } from "../utils/orderSubscription";
 import OrderCard from "../components/Order/OrderCard";
+import { FaChevronLeft } from "react-icons/fa";
 
 const Order = () => {
+	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showAll, setShowAll] = useState(false); // Track whether to show all orders
@@ -36,7 +38,16 @@ const Order = () => {
 
 	return (
 		<div className="p-6">
-			<h2 className="text-3xl">Order</h2>
+			<div className="grid gap-3 grid-cols-3 place-items-center mb-2 py-4">
+				<FaChevronLeft
+					color="white"
+					cursor="pointer"
+					size={22}
+					onClick={() => navigate("/")}
+					className="place-self-start mt-3"
+				/>
+				<h2 className="text-3xl">Orders</h2>
+			</div>
 
 			<div className="flex justify-between py-6">
 				<button onClick={() => setShowAll((prev) => !prev)}>
