@@ -1,5 +1,5 @@
 import { GiKnifeFork } from "react-icons/gi";
-import { IoCartOutline } from "react-icons/io5";
+import { IoMdCart } from "react-icons/io";
 import { MdHome, MdTableBar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +18,9 @@ const navItems = [
 		size: "col-span-2",
 		logo: () => (
 			<GiKnifeFork
-				className="absolute right-0 bottom-0"
+				className="absolute right-20 bottom-10"
 				color="black"
-				size={170}
+				size={150}
 			/>
 		),
 	},
@@ -29,7 +29,7 @@ const navItems = [
 		path: "/order",
 		size: "col-span-2",
 		logo: () => (
-			<IoCartOutline className="absolute right-10" color="black" size={170} />
+			<IoMdCart className="absolute right-10" color="black" size={170} />
 		),
 	},
 	{
