@@ -1,21 +1,68 @@
-import { Link } from "react-router-dom";
+import { GiKnifeFork } from "react-icons/gi";
+import { IoCartOutline } from "react-icons/io5";
+import { MdHome, MdTableBar } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+
+const navItems = [
+	{
+		name: "Home",
+		path: "/home",
+		size: "col-span-1",
+		logo: () => (
+			<MdHome className="absolute right-0 bottom-0" color="black" size={170} />
+		),
+	},
+	{
+		name: "Menu",
+		path: "/menu",
+		size: "col-span-2",
+		logo: () => (
+			<GiKnifeFork
+				className="absolute right-0 bottom-0"
+				color="black"
+				size={170}
+			/>
+		),
+	},
+	{
+		name: "Order",
+		path: "/order",
+		size: "col-span-2",
+		logo: () => (
+			<IoCartOutline className="absolute right-10" color="black" size={170} />
+		),
+	},
+	{
+		name: "Table",
+		path: "/table",
+		size: "col-span-1",
+		logo: () => (
+			<MdTableBar
+				className="absolute right-0 bottom-0"
+				color="black"
+				size={170}
+			/>
+		),
+	},
+];
 
 const Navbar = () => {
+	const navigate = useNavigate();
+
 	return (
-		<nav className="flex justify-center space-x-4 gap-20 p-4 bg-gray-200">
-			<Link to="/home" className="text-blue-600">
-				Home
-			</Link>
-			<Link to="/menu" className="text-blue-600">
-				Menu
-			</Link>
-			<Link to="/order" className="text-blue-600">
-				Order
-			</Link>
-			<Link to="/table" className="text-blue-600">
-				Table
-			</Link>
-		</nav>
+		<section className="grid place-items-center h-screen">
+			<nav className="w-[60%] h-[60%] grid grid-cols-3 gap-4">
+				{navItems.map(({ name, path, size, logo }) => (
+					<div
+						onClick={() => navigate(path)}
+						key={name}
+						className={`cursor-pointer bg-white rounded-lg p-4 relative ${size}`}>
+						<h2 className="text-2xl text-black">{name}</h2>
+						{logo && logo()}
+					</div>
+				))}
+			</nav>
+		</section>
 	);
 };
 
