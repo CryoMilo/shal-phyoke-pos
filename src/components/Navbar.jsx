@@ -18,9 +18,9 @@ const navItems = [
 		size: "col-span-2",
 		logo: () => (
 			<GiKnifeFork
-				className="absolute right-20 bottom-10"
+				className="absolute right-10 bottom-6"
 				color="black"
-				size={150}
+				size={130}
 			/>
 		),
 	},
