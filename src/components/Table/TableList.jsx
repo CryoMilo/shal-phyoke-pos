@@ -33,10 +33,10 @@ const TableList = () => {
 				/>
 				<h2 className="text-3xl">Tables</h2>
 				<button className="place-self-end">
-					<Link to="/menu/create">Create Table</Link>
+					<Link to="/table/create">Create Table</Link>
 				</button>
 			</div>
-			<ul className="grid grid-cols-6 gap-8">
+			<ul className="grid grid-cols-5 gap-8">
 				{table.map((item) => (
 					<React.Fragment key={item.table_id}>
 						<TableCard item={item} />

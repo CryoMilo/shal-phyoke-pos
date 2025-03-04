@@ -54,7 +54,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/table/edit/:tableId",
-		element: <ManageTable />,
+		element: <ManageTable isEdit />,
 	},
 ]);
 
