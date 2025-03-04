@@ -29,8 +29,8 @@ const router = createBrowserRouter([
 		element: <ManageMenu />,
 	},
 	{
-		path: "/menu/edit",
-		element: <ManageMenu />,
+		path: "/menu/edit/:menuId",
+		element: <ManageMenu isEdit />,
 	},
 	{
 		path: "/order",
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
 		element: <ManageTable />,
 	},
 	{
-		path: "/table/edit",
+		path: "/table/edit/:tableId",
 		element: <ManageTable />,
 	},
 ]);

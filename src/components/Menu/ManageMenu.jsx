@@ -1,9 +1,11 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
 import { FaChevronLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const ManageMenu = () => {
+export const ManageMenu = ({ isEdit }) => {
+	const { menuId } = useParams();
 	const navigate = useNavigate();
 	const [menuName, setMenuName] = useState("");
 	const [price, setPrice] = useState(0);
@@ -13,13 +15,35 @@ export const ManageMenu = () => {
 		"https://www.servli.com/cdn/shop/t/262/assets/fsr-placeholder.png?v=45093109498714503231652397781"
 	);
 
-	async function handleCreateMenuItem() {
+	const getMenuData = async () => {
+		console.log("MENU ID", menuId);
+		const { data, error } = await supabase
+			.from("menu")
+			.select("*")
+			.eq("id", menuId)
+			.single();
+		if (error) {
+			console.error("Error fetching menu:", error.message);
+			return;
+		}
+
+		setMenuName(data.menu_name);
+		setPrice(data.price);
+		setDescription(data.description);
+		setImagePreview(data.image || imagePreview);
+	};
+
+	useEffect(() => {
+		getMenuData();
+	}, []);
+
+	async function handleSaveMenuItem() {
 		if (!menuName || price <= 0) {
 			alert("Menu name and valid price are required.");
 			return;
 		}
 
-		let imageUrl = null;
+		let imageUrl = imagePreview || null; // Use existing image if available
 		if (image) {
 			const fileExtension = image.name.split(".").pop();
 			const fileName = `${menuName}-${Date.now()}.${fileExtension}`;
@@ -46,28 +70,70 @@ export const ManageMenu = () => {
 			imageUrl = publicUrl;
 		}
 
-		const { error } = await supabase.from("menu").insert([
-			{
-				menu_name: menuName,
-				price,
-				description,
-				image: imageUrl,
-			},
-		]);
+		if (isEdit) {
+			// Update menu item
+			const { error } = await supabase
+				.from("menu")
+				.update({
+					menu_name: menuName,
+					price,
+					description,
+					image: imageUrl,
+				})
+				.eq("id", menuId); // Use ID to update
 
-		if (error) {
-			console.error("Error creating menu item:", error);
-			alert("Failed to create menu item.");
+			if (error) {
+				console.error("Error updating menu item:", error);
+				alert("Failed to update menu item.");
+			} else {
+				alert("Menu item updated successfully!");
+				navigate("/menu");
+			}
 		} else {
-			alert("Menu item created successfully!");
-			setMenuName("");
-			setPrice(0);
-			setDescription("");
-			setImage(null);
-			setImagePreview(
-				"https://www.servli.com/cdn/shop/t/262/assets/fsr-placeholder.png?v=45093109498714503231652397781"
-			);
+			// Create new menu item
+			const { error } = await supabase.from("menu").insert([
+				{
+					menu_name: menuName,
+					price,
+					description,
+					image: imageUrl,
+				},
+			]);
+
+			if (error) {
+				console.error("Error creating menu item:", error);
+				alert("Failed to create menu item.");
+			} else {
+				alert("Menu item created successfully!");
+				setMenuName("");
+				setPrice(0);
+				setDescription("");
+				setImage(null);
+				setImagePreview(
+					"https://www.servli.com/cdn/shop/t/262/assets/fsr-placeholder.png?v=45093109498714503231652397781"
+				);
+			}
 		}
+	}
+
+	async function handleDeleteMenu() {
+		const isConfirmed = window.confirm(
+			"Are you sure you want to delete this menu item?"
+		);
+		if (!isConfirmed) return;
+
+		const { error: deleteError } = await supabase
+			.from("menu")
+			.delete()
+			.eq("id", menuId);
+
+		if (deleteError) {
+			console.error("Error deleting Menu:", deleteError);
+			alert("Failed to delete menu.");
+			return;
+		}
+
+		navigate("/menu");
 	}
 
 	return (
@@ -82,12 +148,12 @@ export const ManageMenu = () => {
 			</div>
 			<div className="shadow-lg rounded-lg p-8 w-[50%] border border-gray-300">
 				<h2 className="text-2xl font-bold mb-4 text-center">
-					Create Menu Item
+					{isEdit ? "Update Menu Item" : "Create Menu Item"}
 				</h2>
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
-						handleCreateMenuItem();
+						handleSaveMenuItem();
 					}}>
 					<div className="grid grid-cols-2 place-items-center gap-8">
 						{/* Image Upload */}
@@ -146,11 +212,23 @@ export const ManageMenu = () => {
 							</div>
 						</div>
 					</div>
-					<button
-						type="submit"
-						className="w-full bg-white text-black px-4 mt-4 rounded">
-						Create
-					</button>
+
+					{/* Action Buttons */}
+					<div>
+						<button
+							type="submit"
+							className="w-full bg-white text-black px-4 mt-4 rounded">
+							{isEdit ? "Update" : "Create"}
+						</button>
+						{isEdit && (
+							<button
+								onClick={() => handleDeleteMenu()}
+								type="button"
+								className="w-full bg-red-400 text-black px-4 mt-4 rounded">
+								Delete
+							</button>
+						)}
+					</div>
 				</form>
 			</div>
 		</div>

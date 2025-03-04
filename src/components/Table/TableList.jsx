@@ -23,19 +23,20 @@ const TableList = () => {
 
 	return (
 		<div className="mx-10">
-			<div className="flex gap-3 justify-between items-center py-6 mb-10">
+			<div className="grid gap-3 grid-cols-3 place-items-center py-6 mb-10">
 				<FaChevronLeft
 					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}
+					className="place-self-start mt-3"
 				/>
 				<h2 className="text-3xl">Tables</h2>
-				<button className="bg-white cursor-pointer">
-					<Link to="/table/create">Create Table</Link>
+				<button className="place-self-end">
+					<Link to="/menu/create">Create Table</Link>
 				</button>
 			</div>
-			<ul className="flex flex-wrap flex-row gap-8 justify-evenly items-center">
+			<ul className="grid grid-cols-6 gap-8">
 				{table.map((item) => (
 					<React.Fragment key={item.table_id}>
 						<TableCard item={item} />
