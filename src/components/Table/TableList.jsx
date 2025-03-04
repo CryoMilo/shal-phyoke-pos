@@ -23,13 +23,14 @@ const TableList = () => {
 
 	return (
 		<div className="mx-10">
-			<div className="flex gap-3 justify-between items-center py-6">
+			<div className="flex gap-3 justify-between items-center py-6 mb-10">
 				<FaChevronLeft
 					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}
 				/>
+				<h2 className="text-3xl">Tables</h2>
 				<button className="bg-white cursor-pointer">
 					<Link to="/table/create">Create Table</Link>
 				</button>

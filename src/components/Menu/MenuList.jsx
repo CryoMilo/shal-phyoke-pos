@@ -23,13 +23,14 @@ const MenuList = () => {
 
 	return (
 		<div className="mx-10">
-			<div className="flex gap-3 justify-between items-center py-6">
+			<div className="flex gap-3 justify-between items-center py-6 mb-10">
 				<FaChevronLeft
 					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}
 				/>
+				<h2 className="text-3xl">Menu</h2>
 				<button>
 					<Link to="/menu/create">Create Menu</Link>
 				</button>
