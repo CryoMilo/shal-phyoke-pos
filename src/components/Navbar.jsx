@@ -1,6 +1,6 @@
 import { GiKnifeFork } from "react-icons/gi";
 import { IoMdCart } from "react-icons/io";
-import { MdHome, MdTableBar } from "react-icons/md";
+import { MdTableBar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const navItems = [

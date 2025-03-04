@@ -16,7 +16,6 @@ export const ManageMenu = ({ isEdit }) => {
 	);
 
 	const getMenuData = async () => {
-		console.log("MENU ID", menuId);
 		const { data, error } = await supabase
 			.from("menu")
 			.select("*")
