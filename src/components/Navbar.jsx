@@ -4,18 +4,26 @@ import { MdHome, MdTableBar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const navItems = [
+	// {
+	// 	name: "Home",
+	// 	path: "/home",
+	// 	size: "col-span-1",
+	// 	logo: () => (
+	// 		<MdHome className="absolute right-0 bottom-0" color="black" size={170} />
+	// 	),
+	// },
 	{
-		name: "Home",
-		path: "/home",
-		size: "col-span-1",
+		name: "Order",
+		path: "/order",
+		size: "col-span-3",
 		logo: () => (
-			<MdHome className="absolute right-0 bottom-0" color="black" size={170} />
+			<IoMdCart className="absolute right-10" color="black" size={170} />
 		),
 	},
 	{
 		name: "Menu",
 		path: "/menu",
-		size: "col-span-2",
+		size: "col-span-1",
 		logo: () => (
 			<GiKnifeFork
 				className="absolute right-10 bottom-6"
@@ -25,17 +33,9 @@ const navItems = [
 		),
 	},
 	{
-		name: "Order",
-		path: "/order",
-		size: "col-span-2",
-		logo: () => (
-			<IoMdCart className="absolute right-10" color="black" size={170} />
-		),
-	},
-	{
 		name: "Table",
 		path: "/table",
-		size: "col-span-1",
+		size: "col-span-2",
 		logo: () => (
 			<MdTableBar
 				className="absolute right-0 bottom-0"
