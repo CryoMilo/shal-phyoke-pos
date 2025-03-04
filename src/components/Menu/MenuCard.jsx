@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { IoIosAdd } from "react-icons/io";
 
 const MenuCard = ({ item }) => {
 	return (
@@ -13,11 +12,11 @@ const MenuCard = ({ item }) => {
 			<p className="text-gray-300">Price: {item.price.toFixed(2)}</p>
 
 			<div className="w-full flex flex-row gap-1 pt-3">
-				<button
+				{/* <button
 					className="w-full bg-yellow-300 hover:bg-yellow-600 border-white text-black grid place-items-center px-0 py-2"
 					type="button">
 					<IoIosAdd size={23} />
-				</button>
+				</button> */}
 			</div>
 		</div>
 	);
