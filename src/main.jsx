@@ -10,11 +10,26 @@ import Table from "./pages/Table";
 import ManageOrder from "./components/Order/ManageOrder";
 import { ManageMenu } from "./components/Menu/ManageMenu";
 import ManageTable from "./components/Table/ManageTable";
+import Login from "./components/Auth/Login";
+import SignUp from "./components/Auth/SignUp";
+import ForgotPassword from "./components/Auth/ForgotPassword";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
+	},
+	{
+		path: "/auth/login",
+		element: <Login />,
+	},
+	{
+		path: "/auth/sign-up",
+		element: <SignUp />,
+	},
+	{
+		path: "/auth/forgot-password",
+		element: <ForgotPassword />,
 	},
 	{
 		path: "/home",
