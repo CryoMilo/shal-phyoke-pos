@@ -136,7 +136,7 @@ export const ManageMenu = ({ isEdit }) => {
 	}
 
 	return (
-		<div className="flex justify-center items-center h-screen">
+		<div className="flex justify-center items-center h-screen shadow-xl">
 			<div className="absolute top-0 left-0 m-10">
 				<FaChevronLeft
 					cursor="pointer"
