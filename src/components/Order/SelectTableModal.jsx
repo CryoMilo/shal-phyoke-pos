@@ -31,7 +31,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-			<div className="bg-black rounded-lg p-6 w-[50%] shadow-lg">
+			<div className="bg-primary rounded-lg p-6 w-[50%] shadow-lg">
 				<h3 className="text-xl font-semibold mb-4">Select a Table</h3>
 				<div className="w-full min-h-64">
 					{loading ? (
@@ -41,7 +41,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 							<div
 								onClick={() => handleTableClick(null)}
 								className="flex flex-col cursor-pointer">
-								<div className="w-16 h-16 grid place-items-center rounded-md border-2 border-white bg-white">
+								<div className="w-16 h-16 grid place-items-center rounded-md border-2 border-secondary bg-white">
 									<MdOutlineDoNotDisturbAlt color="black" size={40} />
 								</div>
 								<div className="w-16 text-center">None</div>
@@ -54,10 +54,10 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 										item.occupied ? "opacity-50 cursor-not-allowed" : ""
 									}`}>
 									<div
-										className={`w-16 h-16 border-4 rounded-md ${
+										className={`w-16 h-16 border-2 rounded-md ${
 											item.occupied
 												? "border-gray-500 bg-gray-700"
-												: "border-white bg-white cursor-pointer"
+												: "border-secondary bg-white cursor-pointer"
 										}`}>
 										<img
 											src={item.image_url}
@@ -80,9 +80,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 					)}
 				</div>
 				<div className="mt-4 flex justify-end">
-					<button
-						className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-						onClick={onClose}>
+					<button className="px-4 py-2 rounded" onClick={onClose}>
 						Close
 					</button>
 				</div>

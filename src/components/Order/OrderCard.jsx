@@ -37,11 +37,11 @@ const OrderCard = ({ order }) => {
 	};
 
 	return (
-		<div className="w-80 p-4 relative shadow-lg rounded-2xl bg-transparent border-2 border-white flex justify-between flex-col">
+		<div className="w-80 p-4 relative shadow-lg rounded-2xl bg-transparent border-2 border-secondary flex justify-between flex-col">
 			<div>
 				<div className="flex justify-between items-start">
 					<div>
-						<div className="bg-white w-14 h-14 p-3 border-2 border-white rounded-md flex justify-center mb-4">
+						<div className="bg-white w-14 h-14 p-3 border-2 border-secondary rounded-md flex justify-center mb-4">
 							{order?.table?.image_url && (
 								<img
 									src={order?.table.image_url}
@@ -101,9 +101,9 @@ const OrderCard = ({ order }) => {
 
 			{/* Action Buttons */}
 			<div className="mt-6 flex justify-between gap-2">
-				<button className="w-full bg-gray-200 text-gray-3400">
-					<Link to={`/order/edit/${order.id}`}>See Details</Link>
-				</button>
+				<Link className="w-full" to={`/order/edit/${order.id}`}>
+					<button className="w-full">See Details</button>
+				</Link>
 
 				{order.paid ? (
 					order.status !== "completed" && (

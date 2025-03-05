@@ -139,7 +139,6 @@ export const ManageMenu = ({ isEdit }) => {
 		<div className="flex justify-center items-center h-screen">
 			<div className="absolute top-0 left-0 m-10">
 				<FaChevronLeft
-					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/menu")}
@@ -214,9 +213,7 @@ export const ManageMenu = ({ isEdit }) => {
 
 					{/* Action Buttons */}
 					<div>
-						<button
-							type="submit"
-							className="w-full bg-white text-black px-4 mt-4 rounded">
+						<button type="submit" className="w-full px-4 mt-4 rounded">
 							{isEdit ? "Update" : "Create"}
 						</button>
 						{isEdit && (

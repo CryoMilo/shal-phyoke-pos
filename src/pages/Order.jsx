@@ -40,11 +40,10 @@ const Order = () => {
 		<div className="p-6">
 			<div className="grid gap-3 grid-cols-3 place-items-center mb-2 py-4">
 				<FaChevronLeft
-					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}
-					className="place-self-start mt-3"
+					className="place-self-start mt-3 text-secondary"
 				/>
 				<h2 className="text-3xl">Orders</h2>
 			</div>
@@ -54,7 +53,7 @@ const Order = () => {
 					{showAll ? "Show Pending" : "Show All"}
 				</button>
 				<Link to="/order/create">
-					<button className="bg-white text-black">Create Order</button>
+					<button>Create Order</button>
 				</Link>
 			</div>
 

@@ -25,7 +25,6 @@ const TableList = () => {
 		<div className="mx-10">
 			<div className="grid gap-3 grid-cols-3 place-items-center py-6 mb-10">
 				<FaChevronLeft
-					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}

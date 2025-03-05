@@ -25,16 +25,15 @@ const MenuList = () => {
 		<div className="mx-10">
 			<div className="grid gap-3 grid-cols-3 place-items-center py-6 mb-10">
 				<FaChevronLeft
-					color="white"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}
-					className="place-self-start mt-3"
+					className="place-self-start mt-3 text-secondary"
 				/>
 				<h2 className="text-3xl">Menu</h2>
-				<button className="place-self-end">
-					<Link to="/menu/create">Create Menu</Link>
-				</button>
+				<Link className="place-self-end" to="/menu/create">
+					<button>Create Menu</button>
+				</Link>
 			</div>
 			<ul className="grid grid-cols-5 place-items-center gap-8">
 				{menu.map((item) => (

@@ -254,7 +254,7 @@ const ManageOrder = ({ isEdit }) => {
 		<div className="p-6">
 			<div className="flex gap-3 items-center">
 				<FaChevronLeft
-					color="white"
+					className="text-secondary"
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/order")}
@@ -267,38 +267,40 @@ const ManageOrder = ({ isEdit }) => {
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
-								className="w-fit px-3 py-3 rounded-md border border-gray-400">
-								<div className="border-2 border-white w-40 h-40 rounded-md overflow-hidden">
+								className="w-fit px-3 py-3 rounded-md border border-gray-500">
+								<div className="border-2 border-secondary w-40 h-40 rounded-md overflow-hidden">
 									<img src={item.image} alt="image" className="w-full h-full" />
 								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
-								<p className="text-gray-300">Price: {item.price.toFixed(2)}</p>
+								<p className="text-gray-400">Price: {item.price.toFixed(2)}</p>
 
 								<div className="w-full flex flex-row gap-1 pt-3">
 									<button
 										onClick={() => handleMenuClick(item, false)}
-										className="w-[60%] bg-yellow-300 hover:bg-yellow-600 border-white text-black grid place-items-center px-0 py-2"
+										className="w-[60%] bg-yellow-300 text-black grid place-items-center px-0 py-2"
 										type="button">
 										<IoIosAdd size={23} />
 									</button>
 									<button
-										className="w-[40%] border-white grid place-items-center px-0 py-2"
+										className="w-[40%] border-secondary grid place-items-center px-0 py-2"
 										type="button"
 										onClick={() => handleMenuClick(item, true)}>
-										<TbPaperBag color="white" />
+										<TbPaperBag />
 									</button>
 								</div>
 							</div>
 						))}
 					</div>
 				</div>
-				<div className="col-span-2 border-2 border-white p-6 relative">
+
+				{/* Voucher */}
+				<div className="col-span-2 border-2 border-secondary rounded-lg p-6 relative">
 					<button
 						type="button"
-						className="bg-white flex items-center gap-2 w-full justify-center mb-4"
+						className="bg-secondary flex items-center gap-2 w-full justify-center mb-4"
 						onClick={() => setIsTableModalOpen(true)}>
-						<p className="text-black">
-							{selectedTable?.table_name || "Choose Table"}
+						<p className="text-primary">
+							{selectedTable?.table_name || "Select Table"}
 						</p>
 						{selectedTable?.image_url ? (
 							<div className="w-6 h-6">
@@ -312,7 +314,7 @@ const ManageOrder = ({ isEdit }) => {
 					</button>
 
 					<div className="h-[86%] pb-20">
-						<table className="w-full border-collapse border border-transparent text-left text-lg">
+						<table className="w-full border-collapse border border-transparent text-center text-lg">
 							<thead>
 								<tr>
 									<th className="border-b border-transparent px-4 py-2">
@@ -346,10 +348,10 @@ const ManageOrder = ({ isEdit }) => {
 													{(item.price ?? 0) * item.quantity}
 												</td>
 
-												<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
-													<button onClick={() => handleRemoveItem(item, false)}>
-														X
-													</button>
+												<td
+													onClick={() => handleRemoveItem(item, false)}
+													className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+													X
 												</td>
 											</tr>
 										)}
@@ -357,8 +359,8 @@ const ManageOrder = ({ isEdit }) => {
 										{/* Takeaway row (only if takeawayQuantity > 0) */}
 										{item.takeawayQuantity > 0 && (
 											<tr>
-												<td className="border-t border-transparent px-4 py-2 ">
-													<div className="flex items-center gap-2 flex-wrap">
+												<td className="border-t border-transparent px-4 py-2">
+													<div className="flex items-center justify-center gap-2 flex-wrap">
 														<p>{item.menu_name}</p>
 														<TbPaperBag
 															className="inline"
@@ -374,10 +376,10 @@ const ManageOrder = ({ isEdit }) => {
 													{(item.price ?? 0) * item.takeawayQuantity}
 												</td>
 
-												<td className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
-													<button onClick={() => handleRemoveItem(item, true)}>
-														X
-													</button>
+												<td
+													onClick={() => handleRemoveItem(item, true)}
+													className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+													X
 												</td>
 											</tr>
 										)}
@@ -385,14 +387,20 @@ const ManageOrder = ({ isEdit }) => {
 								))}
 							</tbody>
 						</table>
-						<div className="border-b-2 border-white my-8"></div>
-						<div className="flex justify-between px-16">
-							<p>Total</p>
-							<p>{getMenuPriceTotal(selectedMenu)}</p>
-						</div>
+						{selectedMenu.length == [] ? (
+							<></>
+						) : (
+							<>
+								<div className="border-b-2 border-secondary my-8"></div>
+								<div className="flex justify-between px-16">
+									<p>Total</p>
+									<p>{getMenuPriceTotal(selectedMenu)}</p>
+								</div>
+							</>
+						)}
 					</div>
 
-					<div className="w-full h-20 border-t-2 border-white absolute bottom-0 px-4 left-0 flex justify-between items-center gap-4">
+					<div className="w-full h-20 border-t-2 border-secondary absolute bottom-0 px-4 left-0 flex justify-between items-center gap-4">
 						{isEdit ? (
 							<button
 								type="submit"

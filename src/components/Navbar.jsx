@@ -17,7 +17,7 @@ const navItems = [
 		path: "/order",
 		size: "col-span-3",
 		logo: () => (
-			<IoMdCart className="absolute right-10" color="black" size={170} />
+			<IoMdCart className="absolute right-10 text-primary" size={170} />
 		),
 	},
 	{
@@ -26,8 +26,7 @@ const navItems = [
 		size: "col-span-1",
 		logo: () => (
 			<GiKnifeFork
-				className="absolute right-10 bottom-6"
-				color="black"
+				className="absolute right-10 bottom-6 text-primary"
 				size={130}
 			/>
 		),
@@ -38,8 +37,7 @@ const navItems = [
 		size: "col-span-2",
 		logo: () => (
 			<MdTableBar
-				className="absolute right-0 bottom-0"
-				color="black"
+				className="absolute right-0 bottom-0 text-primary"
 				size={170}
 			/>
 		),
@@ -56,8 +54,8 @@ const Navbar = () => {
 					<div
 						onClick={() => navigate(path)}
 						key={name}
-						className={`cursor-pointer bg-white rounded-lg p-4 relative ${size}`}>
-						<h2 className="text-2xl text-black">{name}</h2>
+						className={`cursor-pointer bg-secondary rounded-lg p-4 relative ${size}`}>
+						<h2 className="text-2xl text-primary">{name}</h2>
 						{logo && logo()}
 					</div>
 				))}
