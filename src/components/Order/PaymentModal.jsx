@@ -13,7 +13,7 @@ const PaymentModal = ({ orderId, onClose }) => {
 	const handlePayment = async () => {
 		const { error } = await supabase
 			.from("order")
-			.update({ paid: true, payment_method: activePayment })
+			.update({ payment_method: activePayment, status: "paid" })
 			.eq("id", orderId);
 
 		if (error) {

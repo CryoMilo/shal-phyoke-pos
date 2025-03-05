@@ -15,7 +15,7 @@ const ManageOrder = ({ isEdit }) => {
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
 	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
-	const [orderStatus, setOrderStatus] = useState("making");
+	const [orderStatus, setOrderStatus] = useState("unpaid");
 
 	const getOrderData = async () => {
 		const { data, error } = await supabase
@@ -43,10 +43,9 @@ const ManageOrder = ({ isEdit }) => {
 
 		const { error } = await supabase.from("order").insert([
 			{
-				status: "making",
+				status: "unpaid",
 				table_id: selectedTable?.id,
 				menu_items: selectedMenu,
-				paid: false,
 				payment_method: null,
 			},
 		]);

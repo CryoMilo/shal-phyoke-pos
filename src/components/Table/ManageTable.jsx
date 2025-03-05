@@ -172,7 +172,7 @@ const ManageTable = ({ isEdit }) => {
 									value={tableName}
 									onChange={(e) => setTableName(e.target.value)}
 									required
-									className="block p-2 mt-1 w-full border border-gray-400 rounded"
+									className="block text-primary p-2 mt-1 w-full border border-gray-400 rounded"
 								/>
 							</div>
 						</div>

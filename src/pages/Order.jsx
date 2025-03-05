@@ -9,7 +9,7 @@ const Order = () => {
 	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [showAll, setShowAll] = useState(false); // Track whether to show all orders
+	const [selectedFilter, setSelectedFilter] = useState("unpaid"); // Default: Show pending orders
 
 	const fetchOrders = async () => {
 		let query = supabase
@@ -17,8 +17,9 @@ const Order = () => {
 			.select("*, table:table_id(*)")
 			.order("created_at", { ascending: true });
 
-		if (!showAll) {
-			query = query.neq("status", "completed"); // Exclude completed orders when showAll is false
+		// Apply filter based on selected option
+		if (selectedFilter !== "all") {
+			query = query.eq("status", selectedFilter);
 		}
 
 		const { data, error } = await query;
@@ -34,29 +35,40 @@ const Order = () => {
 		fetchOrders();
 		const unsubscribe = subscribeToOrders(setOrders);
 		return () => unsubscribe();
-	}, [showAll]); // Re-fetch orders when showAll changes
+	}, [selectedFilter]); // Re-fetch when filter changes
 
 	return (
 		<div className="p-6">
-			<div className="grid gap-3 grid-cols-3 place-items-center mb-2 py-4">
+			<div className="grid gap-3 grid-cols-3 place-items-center py-4">
 				<FaChevronLeft
 					cursor="pointer"
 					size={22}
 					onClick={() => navigate("/")}
 					className="place-self-start mt-3 text-secondary"
 				/>
-				<h2 className="text-3xl">Orders</h2>
-			</div>
-
-			<div className="flex justify-between py-6">
-				<button onClick={() => setShowAll((prev) => !prev)}>
-					{showAll ? "Show Pending" : "Show All"}
-				</button>
-				<Link to="/order/create">
+				<h2 className="text-3xl">Order</h2>
+				<Link className="place-self-end" to="/order/create">
 					<button>Create Order</button>
 				</Link>
 			</div>
 
+			{/* Selector Bar */}
+			<div className="flex justify-center gap-4 py-6">
+				{["all", "paid", "unpaid", "completed"].map((status) => (
+					<button
+						key={status}
+						className={`px-4 py-2 rounded-md transition-colors ${
+							selectedFilter === status
+								? "bg-secondary text-primary font-bold"
+								: "bg-primary text-secondary"
+						}`}
+						onClick={() => setSelectedFilter(status)}>
+						{status.charAt(0).toUpperCase() + status.slice(1)}
+					</button>
+				))}
+			</div>
+
+			{/* Order List */}
 			{loading ? (
 				<p>Loading orders...</p>
 			) : orders.length > 0 ? (

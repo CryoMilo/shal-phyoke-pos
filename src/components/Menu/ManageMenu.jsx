@@ -186,7 +186,7 @@ export const ManageMenu = ({ isEdit }) => {
 									value={menuName}
 									onChange={(e) => setMenuName(e.target.value)}
 									required
-									className="block p-2 mt-1 w-full border border-gray-400 rounded"
+									className="block text-primary p-2 mt-1 w-full border border-gray-400 rounded"
 								/>
 							</div>
 							<div>
@@ -196,7 +196,7 @@ export const ManageMenu = ({ isEdit }) => {
 									value={price}
 									onChange={(e) => setPrice(parseFloat(e.target.value))}
 									required
-									className="block p-2 mt-1 w-full border border-gray-400 rounded"
+									className="block text-primary p-2 mt-1 w-full border border-gray-400 rounded"
 								/>
 							</div>
 							<div>
@@ -206,7 +206,7 @@ export const ManageMenu = ({ isEdit }) => {
 								<textarea
 									value={description}
 									onChange={(e) => setDescription(e.target.value)}
-									className="block p-2 mt-1 w-full border border-gray-400 rounded"></textarea>
+									className="block text-primary p-2 mt-1 w-full border border-gray-400 rounded"></textarea>
 							</div>
 						</div>
 					</div>
