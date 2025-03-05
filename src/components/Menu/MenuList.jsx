@@ -36,7 +36,7 @@ const MenuList = () => {
 					<Link to="/menu/create">Create Menu</Link>
 				</button>
 			</div>
-			<ul className="grid grid-cols-5 gap-8">
+			<ul className="grid grid-cols-5 place-items-center gap-8">
 				{menu.map((item) => (
 					<React.Fragment key={item.menu_id}>
 						<MenuCard item={item} />
