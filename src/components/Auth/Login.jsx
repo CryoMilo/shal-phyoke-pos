@@ -1,21 +1,63 @@
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import supabase from "../../utils/supabase";
 
 const Login = () => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
+
+	const handleLogin = async (event) => {
+		event.preventDefault();
+		setLoading(true);
+		setErrorMessage("");
+
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password,
+		});
+
+		setLoading(false);
+
+		if (error) {
+			setErrorMessage(error.message);
+		} else {
+			alert("Login successful!");
+		}
+	};
+
+	const handleGoogleSignIn = async () => {
+		const { error } = await supabase.auth.signInWithOAuth({
+			provider: "google",
+		});
+
+		if (error) {
+			setErrorMessage(error.message);
+		}
+	};
+
 	return (
 		<section className="flex items-center justify-center min-h-screen bg-primary">
-			<div className="w-full max-w-md p-8 space-y-6 bg-secondary shadow-md rounded-2xl">
+			<div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-2xl">
 				<h2 className="text-2xl font-bold text-center text-gray-900">
 					Welcome to Shal Phyoke
 				</h2>
-				<form className="space-y-4">
+				{errorMessage && (
+					<p className="text-sm text-red-500 text-center">{errorMessage}</p>
+				)}
+				<form className="space-y-4" onSubmit={handleLogin}>
 					<div>
 						<label className="block text-sm font-medium text-gray-700">
 							Email
 						</label>
 						<input
 							type="email"
-							className="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-gray-900 focus:outline-none"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							className="w-full text-primary px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-gray-900 focus:outline-none"
 							placeholder="Enter your email"
+							required
 						/>
 					</div>
 					<div>
@@ -24,17 +66,22 @@ const Login = () => {
 						</label>
 						<input
 							type="password"
-							className="w-full px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-gray-900 focus:outline-none"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							className="w-full text-primary px-4 py-2 mt-1 border rounded-md focus:ring-2 focus:ring-gray-900 focus:outline-none"
 							placeholder="Enter your password"
+							required
 						/>
 					</div>
 					<button
 						type="submit"
-						className="w-full px-4 py-2 font-bold rounded-md bg-primary text-secondary">
-						Sign In
+						className="w-full px-4 py-2 font-bold text-white bg-black rounded-md hover:bg-gray-800 disabled:opacity-50"
+						disabled={loading}>
+						{loading ? "Signing in..." : "Sign In"}
 					</button>
 					<button
 						type="button"
+						onClick={handleGoogleSignIn}
 						className="w-full flex items-center justify-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-200">
 						<FcGoogle className="text-xl" /> Sign in with Google
 					</button>

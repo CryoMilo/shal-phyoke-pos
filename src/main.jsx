@@ -13,6 +13,7 @@ import ManageTable from "./components/Table/ManageTable";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import ForgotPassword from "./components/Auth/ForgotPassword";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
 	{
@@ -75,6 +76,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<AuthContextProvider>
+			<RouterProvider router={router} />
+		</AuthContextProvider>
 	</React.StrictMode>
 );
