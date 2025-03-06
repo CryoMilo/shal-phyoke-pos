@@ -15,17 +15,28 @@ export const AuthContextProvider = ({ children }) => {
 			return { success: false, error };
 		}
 
+		console.log("CURRENT SESSION", data.session.user);
+
 		return data.session;
 	};
 
 	useEffect(() => {
-		const currentSession = getUserSession();
+		const fetchSession = async () => {
+			const currentSession = await getUserSession(); // Await the result
+			setSession(currentSession || undefined);
+		};
 
-		currentSession ? setSession(currentSession) : setSession(undefined);
+		fetchSession();
 
-		supabase.auth.onAuthStateChange((_event, session) => {
-			setSession(session);
-		});
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(_event, session) => {
+				setSession(session);
+			}
+		);
+
+		return () => {
+			authListener.subscription.unsubscribe();
+		};
 	}, []);
 
 	const signUpNewUser = async ({ email, password }) => {
@@ -71,15 +82,15 @@ export const AuthContextProvider = ({ children }) => {
 
 		if (error) {
 			console.error("There was an error signing up", error);
-			return { success: false, error };
+			return { success: true, error };
 		}
 	};
 
 	return (
-		<AuthContextProvider
+		<AuthContext.Provider
 			value={{ session, signUpNewUser, signOutUser, logInUser }}>
 			{children}
-		</AuthContextProvider>
+		</AuthContext.Provider>
 	);
 };
 

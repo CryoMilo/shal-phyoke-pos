@@ -15,7 +15,7 @@ const SignUp = () => {
 		event.preventDefault();
 		setLoading(true);
 		try {
-			const result = await signUpNewUser(email, password);
+			const result = await signUpNewUser({ email, password });
 
 			if (result.success) {
 				navigate("/");

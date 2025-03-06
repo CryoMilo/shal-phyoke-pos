@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Order from "./pages/Order";
 import Table from "./pages/Table";
@@ -31,10 +30,6 @@ const router = createBrowserRouter([
 	{
 		path: "/auth/forgot-password",
 		element: <ForgotPassword />,
-	},
-	{
-		path: "/home",
-		element: <Home />,
 	},
 	{
 		path: "/menu",
