@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import supabase from "../../utils/supabase";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../../context/AuthContext";
 
 const Login = () => {
+	const navigate = useNavigate();
+	const { logInUser } = UserAuth();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -13,17 +17,16 @@ const Login = () => {
 		setLoading(true);
 		setErrorMessage("");
 
-		const { error } = await supabase.auth.signInWithPassword({
-			email,
-			password,
-		});
+		try {
+			const result = await logInUser({ email, password });
 
-		setLoading(false);
-
-		if (error) {
-			setErrorMessage(error.message);
-		} else {
-			alert("Login successful!");
+			if (result.success) {
+				navigate("/");
+			}
+		} catch (error) {
+			alert("Error!", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 

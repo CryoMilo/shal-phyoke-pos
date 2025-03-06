@@ -4,8 +4,10 @@ import supabase from "../../utils/supabase";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 
-const ManageTable = ({ isEdit }) => {
+const ManageTable = () => {
 	const { tableId } = useParams();
+	const isEdit = !!tableId;
+
 	const navigate = useNavigate();
 	const [tableName, setTableName] = useState("");
 	const [image, setImage] = useState(null);

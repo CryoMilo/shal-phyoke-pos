@@ -15,7 +15,7 @@ export const AuthContextProvider = ({ children }) => {
 			return { success: false, error };
 		}
 
-		console.log("CURRENT SESSION", data.session.user);
+		console.log("CURRENT SESSION", data.session?.user);
 
 		return data.session;
 	};

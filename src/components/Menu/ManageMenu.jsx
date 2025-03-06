@@ -1,11 +1,12 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 
-export const ManageMenu = ({ isEdit }) => {
+export const ManageMenu = () => {
 	const { menuId } = useParams();
+	const isEdit = !!menuId;
+
 	const navigate = useNavigate();
 	const [menuName, setMenuName] = useState("");
 	const [price, setPrice] = useState(0);

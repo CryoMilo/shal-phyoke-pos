@@ -4,14 +4,6 @@ import { MdTableBar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const navItems = [
-	// {
-	// 	name: "Home",
-	// 	path: "/home",
-	// 	size: "col-span-1",
-	// 	logo: () => (
-	// 		<MdHome className="absolute right-0 bottom-0" color="black" size={170} />
-	// 	),
-	// },
 	{
 		name: "Order",
 		path: "/order",

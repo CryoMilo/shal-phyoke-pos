@@ -7,9 +7,10 @@ import { IoIosAdd } from "react-icons/io";
 import { FaChevronLeft } from "react-icons/fa";
 import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 
-// eslint-disable-next-line react/prop-types
-const ManageOrder = ({ isEdit }) => {
+const ManageOrder = () => {
 	const { orderId } = useParams();
+	const isEdit = !!orderId;
+
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);

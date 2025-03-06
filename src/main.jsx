@@ -12,6 +12,7 @@ import ManageTable from "./components/Table/ManageTable";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import ForgotPassword from "./components/Auth/ForgotPassword";
+import ProtectedRoute from "./components/Auth/ProtectedRoute"; // Import the ProtectedRoute component
 import { AuthContextProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
@@ -32,40 +33,45 @@ const router = createBrowserRouter([
 		element: <ForgotPassword />,
 	},
 	{
-		path: "/menu",
-		element: <Menu />,
-	},
-	{
-		path: "/menu/create",
-		element: <ManageMenu />,
-	},
-	{
-		path: "/menu/edit/:menuId",
-		element: <ManageMenu isEdit />,
-	},
-	{
-		path: "/order",
-		element: <Order />,
-	},
-	{
-		path: "/order/create",
-		element: <ManageOrder />,
-	},
-	{
-		path: "/order/edit/:orderId",
-		element: <ManageOrder isEdit />,
-	},
-	{
-		path: "/table",
-		element: <Table />,
-	},
-	{
-		path: "/table/create",
-		element: <ManageTable />,
-	},
-	{
-		path: "/table/edit/:tableId",
-		element: <ManageTable isEdit />,
+		element: <ProtectedRoute />, // Wrap all protected routes
+		children: [
+			{
+				path: "/menu",
+				element: <Menu />,
+			},
+			{
+				path: "/menu/create",
+				element: <ManageMenu />,
+			},
+			{
+				path: "/menu/edit/:menuId",
+				element: <ManageMenu />,
+			},
+			{
+				path: "/order",
+				element: <Order />,
+			},
+			{
+				path: "/order/create",
+				element: <ManageOrder />,
+			},
+			{
+				path: "/order/edit/:orderId",
+				element: <ManageOrder />,
+			},
+			{
+				path: "/table",
+				element: <Table />,
+			},
+			{
+				path: "/table/create",
+				element: <ManageTable />,
+			},
+			{
+				path: "/table/edit/:tableId",
+				element: <ManageTable />,
+			},
+		],
 	},
 ]);
 
