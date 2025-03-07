@@ -24,7 +24,7 @@ const Home = () => {
 	};
 	return (
 		<>
-			<div className="flex justify-end p-4">
+			<div className="absolute right-0 top-0 p-4">
 				{session ? (
 					<button onClick={() => handleLogOut()}>
 						{loading ? "Logging Out" : "Log Out"}

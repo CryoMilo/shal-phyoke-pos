@@ -21,6 +21,10 @@ const router = createBrowserRouter([
 		element: <App />,
 	},
 	{
+		path: "/menu",
+		element: <Menu />,
+	},
+	{
 		path: "/auth/login",
 		element: <Login />,
 	},
@@ -35,10 +39,6 @@ const router = createBrowserRouter([
 	{
 		element: <ProtectedRoute />, // Wrap all protected routes
 		children: [
-			{
-				path: "/menu",
-				element: <Menu />,
-			},
 			{
 				path: "/menu/create",
 				element: <ManageMenu />,
