@@ -72,7 +72,7 @@ const Order = () => {
 			{loading ? (
 				<p>Loading orders...</p>
 			) : orders.length > 0 ? (
-				<div className="grid grid-cols-3 p-6 gap-6">
+				<div className="grid grid-cols-3 p-6 gap-6 place-items-center">
 					{orders.map((order) => (
 						<OrderCard key={order.id} order={order} />
 					))}
