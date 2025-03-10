@@ -123,7 +123,7 @@ const OrderCard = ({ order }) => {
 				)}
 			</div>
 
-			{order.status == "paid" && (
+			{order.payment_method && (
 				<div className="absolute text-3xl text-red-500 border-4 px-3 border-red-500 rounded-lg font-bold flex flex-col items-center right-[10%] bottom-[30%] -rotate-45">
 					<p>PAID BY</p>
 					<p>{order.payment_method}</p>

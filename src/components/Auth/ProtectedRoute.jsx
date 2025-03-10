@@ -5,8 +5,6 @@ const ProtectedRoute = () => {
 	const { session } = UserAuth();
 	const navigate = useNavigate();
 
-	console.log(session);
-
 	if (!session) {
 		navigate("/auth/login");
 	}
