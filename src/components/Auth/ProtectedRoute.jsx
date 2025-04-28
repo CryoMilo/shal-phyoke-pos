@@ -9,7 +9,6 @@ const ProtectedRoute = () => {
 		navigate("/auth/login");
 	}
 
-	// Otherwise, render the requested route
 	return <Outlet />;
 };
 

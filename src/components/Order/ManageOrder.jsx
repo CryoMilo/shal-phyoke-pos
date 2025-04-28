@@ -262,7 +262,7 @@ const ManageOrder = () => {
 				<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
 			</div>
 			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
-				<div className="col-span-3 h-[85vh] overflow-scroll p-4">
+				<div className="col-span-3 h-[85vh] overflow-y-scroll custom-scrollbar p-4">
 					<div className="grid grid-cols-3 gap-4">
 						{menu.map((item) => (
 							<div
