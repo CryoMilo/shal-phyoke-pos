@@ -3,9 +3,12 @@ import { FcGoogle } from "react-icons/fc";
 import supabase from "../../utils/supabase";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
+import { headers } from "next/headers";
 
 const Login = () => {
 	const navigate = useNavigate();
+	const headersList = headers();
+	const hostname = headersList.get("x-forwarded-host");
 	const { logInUser } = UserAuth();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -33,6 +36,7 @@ const Login = () => {
 	const handleGoogleSignIn = async () => {
 		const { error } = await supabase.auth.signInWithOAuth({
 			provider: "google",
+			redirect: `${hostname}/auth/callback`,
 		});
 
 		if (error) {

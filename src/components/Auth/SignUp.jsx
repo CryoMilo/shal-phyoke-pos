@@ -14,6 +14,7 @@ const SignUp = () => {
 	const handleSignUp = async (event) => {
 		event.preventDefault();
 		setLoading(true);
+
 		try {
 			const result = await signUpNewUser({ email, password });
 
