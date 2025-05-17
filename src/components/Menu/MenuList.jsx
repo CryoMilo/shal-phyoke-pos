@@ -22,7 +22,7 @@ const MenuList = () => {
 	}, []);
 
 	return (
-		<div className="mx-10">
+		<section className="mx-10">
 			<div className="grid gap-3 grid-cols-3 place-items-center py-6 mb-10">
 				<FaChevronLeft
 					cursor="pointer"
@@ -35,14 +35,14 @@ const MenuList = () => {
 					<button>Create Menu</button>
 				</Link>
 			</div>
-			<ul className="grid grid-cols-5 place-items-center gap-8">
+			<ul className="flex flex-wrap justify-start gap-8">
 				{menu.map((item) => (
 					<React.Fragment key={item.menu_id}>
 						<MenuCard item={item} />
 					</React.Fragment>
 				))}
 			</ul>
-		</div>
+		</section>
 	);
 };
 
