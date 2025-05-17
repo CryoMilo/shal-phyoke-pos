@@ -14,6 +14,7 @@ import SignUp from "./components/Auth/SignUp";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ProtectedRoute from "./components/Auth/ProtectedRoute"; // Import the ProtectedRoute component
 import { AuthContextProvider } from "./context/AuthContext";
+import ManageStock from "./components/Stock/ManageStock";
 
 const router = createBrowserRouter([
 	{
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
 			{
 				path: "/table/edit/:tableId",
 				element: <ManageTable />,
+			},
+			{
+				path: "/stock",
+				element: <ManageStock />,
 			},
 		],
 	},
