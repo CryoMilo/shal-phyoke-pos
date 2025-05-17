@@ -3,7 +3,7 @@ import { UserAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { GiKnifeFork } from "react-icons/gi";
 import { IoMdCart } from "react-icons/io";
-import { MdTableBar } from "react-icons/md";
+import { MdInventory, MdTableBar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const navItems = [
@@ -34,6 +34,17 @@ const navItems = [
 			<MdTableBar
 				color="black"
 				className="absolute w-fit right-10 bottom-0 size-[67%]"
+			/>
+		),
+	},
+	{
+		name: "Stock",
+		path: "/stock",
+		size: "col-span-3",
+		logo: () => (
+			<MdInventory
+				color="black"
+				className="absolute w-fit right-10 bottom-5 size-[50%]"
 			/>
 		),
 	},
