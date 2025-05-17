@@ -15,6 +15,7 @@ import ForgotPassword from "./components/Auth/ForgotPassword";
 import ProtectedRoute from "./components/Auth/ProtectedRoute"; // Import the ProtectedRoute component
 import { AuthContextProvider } from "./context/AuthContext";
 import ManageStock from "./components/Stock/ManageStock";
+import { StockProvider } from "./context/StockContext";
 
 const router = createBrowserRouter([
 	{
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
 	{
 		path: "/auth/forgot-password",
 		element: <ForgotPassword />,
+	},
+	{
+		path: "/stock",
+		element: <ManageStock />,
 	},
 	{
 		element: <ProtectedRoute />, // Wrap all protected routes
@@ -72,10 +77,6 @@ const router = createBrowserRouter([
 				path: "/table/edit/:tableId",
 				element: <ManageTable />,
 			},
-			{
-				path: "/stock",
-				element: <ManageStock />,
-			},
 		],
 	},
 ]);
@@ -83,7 +84,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<AuthContextProvider>
-			<RouterProvider router={router} />
+			<StockProvider>
+				<RouterProvider router={router} />
+			</StockProvider>
 		</AuthContextProvider>
 	</React.StrictMode>
 );
