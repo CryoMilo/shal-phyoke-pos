@@ -48,7 +48,7 @@ const Order = () => {
 				/>
 				<h2 className="text-3xl">Order</h2>
 				<Link className="place-self-end" to="/order/create">
-					<button>Create Order</button>
+					<button>Create</button>
 				</Link>
 			</div>
 
@@ -72,7 +72,7 @@ const Order = () => {
 			{loading ? (
 				<p>Loading orders...</p>
 			) : orders.length > 0 ? (
-				<div className="grid grid-cols-3 p-6 gap-6 place-items-center">
+				<div className="flex flex-wrap p-6 gap-6">
 					{orders.map((order) => (
 						<OrderCard key={order.id} order={order} />
 					))}

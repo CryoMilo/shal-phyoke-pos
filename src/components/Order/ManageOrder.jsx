@@ -4,7 +4,7 @@ import SelectTableModal from "./SelectTableModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbPaperBag } from "react-icons/tb";
 import { IoIosAdd } from "react-icons/io";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronLeft, FaShoppingBasket } from "react-icons/fa";
 import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 
 const ManageOrder = () => {
@@ -16,6 +16,7 @@ const ManageOrder = () => {
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
 	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
+	// const [isVoucherModalOpen, setVoucherModalOpen] = useState(false);
 	const [orderStatus, setOrderStatus] = useState("unpaid");
 
 	const getOrderData = async () => {
@@ -252,23 +253,26 @@ const ManageOrder = () => {
 
 	return (
 		<div className="p-6">
-			<div className="flex gap-3 items-center">
-				<FaChevronLeft
-					className="text-secondary"
-					cursor="pointer"
-					size={22}
-					onClick={() => navigate("/order")}
-				/>
-				<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
+			<div className="flex gap-3 items-center justify-between">
+				<div className="flex gap-3 items-center">
+					<FaChevronLeft
+						className="text-secondary"
+						cursor="pointer"
+						size={22}
+						onClick={() => navigate("/order")}
+					/>
+					<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
+				</div>
+				<FaShoppingBasket cursor="pointer" size={22} />
 			</div>
-			<div className="grid grid-cols-5 w-full min-h-[80vh] gap-8 mt-6">
-				<div className="col-span-3 h-[85vh] overflow-y-scroll custom-scrollbar p-4">
-					<div className="grid grid-cols-3 gap-4">
+			<div className="flex w-full gap-8 mt-6">
+				<div className="p-4">
+					<div className="flex flex-wrap justify-evenly gap-4">
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
 								className="w-fit px-3 py-3 rounded-md border border-gray-500">
-								<div className="border-2 border-secondary w-40 h-40 rounded-md overflow-hidden">
+								<div className="border-2 border-secondary w-28 h-28 md:w-40 md:h-40 rounded-md overflow-hidden">
 									<img src={item.image} alt="image" className="w-full h-full" />
 								</div>
 								<h5 className="font-semibold text-lg pt-2">{item.menu_name}</h5>
@@ -294,7 +298,7 @@ const ManageOrder = () => {
 				</div>
 
 				{/* Voucher */}
-				<div className="col-span-2 border-2 border-secondary rounded-lg p-6 relative">
+				<div className="hidden md:block col-span-2 border-2 border-secondary rounded-lg p-6 relative">
 					<button
 						type="button"
 						className="bg-secondary flex items-center gap-2 w-full justify-center mb-4"

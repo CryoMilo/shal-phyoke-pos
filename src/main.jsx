@@ -12,10 +12,9 @@ import ManageTable from "./components/Table/ManageTable";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import ForgotPassword from "./components/Auth/ForgotPassword";
-import ProtectedRoute from "./components/Auth/ProtectedRoute"; // Import the ProtectedRoute component
-import { AuthContextProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ManageStock from "./components/Stock/ManageStock";
-import { StockProvider } from "./context/StockContext";
+import { Providers } from "./context/Providers";
 
 const router = createBrowserRouter([
 	{
@@ -83,10 +82,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<AuthContextProvider>
-			<StockProvider>
-				<RouterProvider router={router} />
-			</StockProvider>
-		</AuthContextProvider>
+		<Providers>
+			<RouterProvider router={router} />
+		</Providers>
 	</React.StrictMode>
 );

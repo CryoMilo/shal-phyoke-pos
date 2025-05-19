@@ -3,6 +3,7 @@ import supabase from "../utils/supabase";
 
 const StockContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useStock = () => useContext(StockContext);
 
 // eslint-disable-next-line react/prop-types
