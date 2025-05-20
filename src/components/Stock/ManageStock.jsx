@@ -23,7 +23,7 @@ const ManageStock = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-black text-white flex flex-col items-center p-6">
+		<div className="min-h-screen bg-primary text-white flex flex-col items-center p-6">
 			<h1 className="text-3xl font-bold mb-8">Manage Stock</h1>
 
 			<div className="w-full max-w-2xl space-y-4">

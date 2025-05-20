@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
-import SelectTableModal from "./SelectTableModal";
+// import SelectTableModal from "./SelectTableModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbPaperBag } from "react-icons/tb";
 import { IoIosAdd } from "react-icons/io";
 import { FaChevronLeft, FaShoppingBasket } from "react-icons/fa";
 import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
+import VoucherModal from "./VoucherModal";
 
 const ManageOrder = () => {
 	const { orderId } = useParams();
@@ -15,8 +16,8 @@ const ManageOrder = () => {
 	const [menu, setMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);
 	const [selectedMenu, setSelectedMenu] = useState([]);
-	const [isTableModalOpen, setIsTableModalOpen] = useState(false);
-	// const [isVoucherModalOpen, setVoucherModalOpen] = useState(false);
+	// const [isTableModalOpen, setIsTableModalOpen] = useState(false);
+	const [isVoucherModalOpen, setVoucherModalOpen] = useState(false);
 	const [orderStatus, setOrderStatus] = useState("unpaid");
 
 	const getOrderData = async () => {
@@ -134,20 +135,6 @@ const ManageOrder = () => {
 		navigate("/order");
 	};
 
-	const getMenu = async () => {
-		const { data, error } = await supabase.from("menu").select("*");
-		if (error) {
-			console.error("Error fetching menu:", error.message);
-			return;
-		}
-		setMenu(data);
-	};
-
-	useEffect(() => {
-		getMenu();
-		getOrderData();
-	}, []);
-
 	const handleMenuClick = (item, isTakeaway = false) => {
 		setSelectedMenu((prevSelectedMenu) => {
 			const existingItem = prevSelectedMenu.find(
@@ -251,6 +238,20 @@ const ManageOrder = () => {
 		navigate("/order");
 	};
 
+	const getMenu = async () => {
+		const { data, error } = await supabase.from("menu").select("*");
+		if (error) {
+			console.error("Error fetching menu:", error.message);
+			return;
+		}
+		setMenu(data);
+	};
+
+	useEffect(() => {
+		getMenu();
+		getOrderData();
+	}, []);
+
 	return (
 		<div className="p-6">
 			<div className="flex gap-3 items-center justify-between">
@@ -263,7 +264,12 @@ const ManageOrder = () => {
 					/>
 					<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
 				</div>
-				<FaShoppingBasket cursor="pointer" size={22} />
+				<FaShoppingBasket
+					className="md:invisible"
+					cursor="pointer"
+					size={22}
+					onClick={() => setVoucherModalOpen(true)}
+				/>
 			</div>
 			<div className="flex w-full gap-8 mt-6">
 				<div className="p-4">
@@ -299,7 +305,7 @@ const ManageOrder = () => {
 
 				{/* Voucher */}
 				<div className="hidden md:block col-span-2 border-2 border-secondary rounded-lg p-6 relative">
-					<button
+					{/* <button
 						type="button"
 						className="bg-secondary flex items-center gap-2 w-full justify-center mb-4"
 						onClick={() => setIsTableModalOpen(true)}>
@@ -315,7 +321,7 @@ const ManageOrder = () => {
 								/>
 							</div>
 						) : null}
-					</button>
+					</button> */}
 
 					<div className="h-[86%] pb-20">
 						<table className="w-full border-collapse border border-transparent text-center text-lg">
@@ -436,12 +442,28 @@ const ManageOrder = () => {
 				</div>
 			</div>
 
-			{isTableModalOpen && (
+			{isVoucherModalOpen && (
+				<VoucherModal
+					isEdit={isEdit}
+					// setIsTableModalOpen={setIsTableModalOpen}
+					setSelectedTable={setSelectedTable}
+					selectedTable={selectedTable}
+					setSelectedMenu={setSelectedMenu}
+					selectedMenu={selectedMenu}
+					handleRemoveItem={handleRemoveItem}
+					handleCreateOrder={handleCreateOrder}
+					handleUpdateOrder={handleUpdateOrder}
+					handleDeleteOrder={handleDeleteOrder}
+					onClose={() => setVoucherModalOpen(false)}
+				/>
+			)}
+
+			{/* {isTableModalOpen && (
 				<SelectTableModal
 					setSelectedTable={setSelectedTable}
 					onClose={() => setIsTableModalOpen(false)}
 				/>
-			)}
+			)} */}
 		</div>
 	);
 };
