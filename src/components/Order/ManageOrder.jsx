@@ -250,6 +250,7 @@ const ManageOrder = () => {
 	useEffect(() => {
 		getMenu();
 		getOrderData();
+		isEdit && setVoucherModalOpen(true);
 	}, []);
 
 	return (
