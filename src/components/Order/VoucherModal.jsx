@@ -17,12 +17,13 @@ const VoucherModal = ({
 	handleDeleteOrder,
 }) => {
 	return (
-		<div className="fixed inset-0 bg-opacity-50 z-50 m-10 border-2 border-secondary rounded-lg bg-primary">
-			<div>
-				<div className="flex justify-end">
-					<div className="p-4 mb-4 border-2" onClick={() => onClose()}>
-						<FaMinus />
-					</div>
+		<div className="fixed inset-0 z-50 bg-primary bg-opacity-50 flex items-center justify-center">
+			<div className="relative w-full max-w-3xl h-full bg-primary border-2 border-secondary rounded-lg overflow-hidden flex flex-col">
+				<div
+					className="p-4 border-b-2 w-full flex justify-between items-center"
+					onClick={onClose}>
+					<p>Order Details</p>
+					<FaMinus />
 				</div>
 
 				{/* <button
@@ -43,122 +44,112 @@ const VoucherModal = ({
 				) : null}
 			</button> */}
 
-				<div className="h-[86%] pb-20">
-					<div className="overflow-y-scroll">
-						<table className="w-full border-collapse border border-transparent text-center text-lg">
-							<thead>
-								<tr>
-									<th className="border-b border-transparent px-4 py-2">
-										Menu
-									</th>
-									<th className="border-b border-transparent px-4 py-2">Qty</th>
-									<th className="border-b border-transparent px-4 py-2">
-										Price
-									</th>
+				<div className="overflow-y-auto py-2 flex-grow">
+					<table className="w-full border-collapse border border-transparent text-center text-lg">
+						<thead>
+							<tr>
+								<th className="border-b border-transparent px-4 py-2">Menu</th>
+								<th className="border-b border-transparent px-4 py-2">Qty</th>
+								<th className="border-b border-transparent px-4 py-2">Price</th>
 
-									<th
-										className="border-b border-transparent px-4 py-2 cursor-pointer text-red-500"
-										onClick={() => setSelectedMenu([])}>
-										Clear
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{selectedMenu.map((item) => (
-									<React.Fragment key={item.menu_id}>
-										{/* Dine-in row (only if quantity > 0) */}
-										{item.quantity > 0 && (
-											<tr>
-												<td className="border-t border-transparent px-4 py-2">
-													{item.menu_name}
-												</td>
-												<td className="border-t border-transparent px-4 py-2">
-													{item.quantity}
-												</td>
-												<td className="border-t border-transparent px-4 py-2">
-													{(item.price ?? 0) * item.quantity}
-												</td>
+								<th
+									className="border-b border-transparent px-4 py-2 cursor-pointer text-red-500"
+									onClick={() => setSelectedMenu([])}>
+									Clear
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{selectedMenu.map((item) => (
+								<React.Fragment key={item.menu_id}>
+									{/* Dine-in row (only if quantity > 0) */}
+									{item.quantity > 0 && (
+										<tr>
+											<td className="border-t border-transparent px-4 py-2">
+												{item.menu_name}
+											</td>
+											<td className="border-t border-transparent px-4 py-2">
+												{item.quantity}
+											</td>
+											<td className="border-t border-transparent px-4 py-2">
+												{(item.price ?? 0) * item.quantity}
+											</td>
 
-												<td
-													onClick={() => handleRemoveItem(item, false)}
-													className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
-													X
-												</td>
-											</tr>
-										)}
+											<td
+												onClick={() => handleRemoveItem(item, false)}
+												className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+												X
+											</td>
+										</tr>
+									)}
 
-										{/* Takeaway row (only if takeawayQuantity > 0) */}
-										{item.takeawayQuantity > 0 && (
-											<tr>
-												<td className="border-t border-transparent px-4 py-2">
-													<div className="flex items-center justify-center gap-2 flex-wrap">
-														<p>{item.menu_name}</p>
-														<TbPaperBag
-															className="inline"
-															color="cyan"
-															size={18}
-														/>
-													</div>
-												</td>
-												<td className="border-t border-transparent px-4 py-2">
-													{item.takeawayQuantity}
-												</td>
-												<td className="border-t border-transparent px-4 py-2">
-													{(item.price ?? 0) * item.takeawayQuantity}
-												</td>
+									{/* Takeaway row (only if takeawayQuantity > 0) */}
+									{item.takeawayQuantity > 0 && (
+										<tr>
+											<td className="border-t border-transparent px-4 py-2">
+												<div className="flex items-center justify-center gap-2 flex-wrap">
+													<p>{item.menu_name}</p>
+													<TbPaperBag
+														className="inline"
+														color="cyan"
+														size={18}
+													/>
+												</div>
+											</td>
+											<td className="border-t border-transparent px-4 py-2">
+												{item.takeawayQuantity}
+											</td>
+											<td className="border-t border-transparent px-4 py-2">
+												{(item.price ?? 0) * item.takeawayQuantity}
+											</td>
 
-												<td
-													onClick={() => handleRemoveItem(item, true)}
-													className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
-													X
-												</td>
-											</tr>
-										)}
-									</React.Fragment>
-								))}
-							</tbody>
-						</table>
-						{selectedMenu.length == [] ? (
-							<></>
-						) : (
-							<>
-								<div className="border-b-2 border-secondary my-8"></div>
-								<div className="flex justify-between px-16">
-									<p>Total</p>
-									<p>{getMenuPriceTotal(selectedMenu)}</p>
-								</div>
-							</>
-						)}
-					</div>
+											<td
+												onClick={() => handleRemoveItem(item, true)}
+												className="border-t border-transparent px-4 py-2 text-red-500 cursor-pointer">
+												X
+											</td>
+										</tr>
+									)}
+								</React.Fragment>
+							))}
+						</tbody>
+					</table>
 				</div>
 
-				<div className="w-full h-20 border-t-2 border-secondary absolute bottom-0 px-4 left-0 flex justify-between items-center gap-4">
-					{isEdit ? (
-						<button
-							type="submit"
-							className="h-fit bg-red-500 text-black"
-							onClick={() => handleDeleteOrder()}>
-							Delete
-						</button>
-					) : (
-						<div className="invisible"></div>
-					)}
-					<div className="flex items-center gap-4">
+				<div className="w-full h-20 border-t-2 border-secondary px-4 flex justify-between items-center gap-4">
+					<div className="flex justify-between gap-4">
+						<p>Total - </p>
+						<p>{getMenuPriceTotal(selectedMenu)}</p>
+					</div>
+
+					<div className="flex gap-4">
 						{isEdit ? (
 							<button
 								type="submit"
-								className="h-fit"
-								onClick={handleUpdateOrder}>
-								Confirm
+								className="h-fit bg-red-500 text-black"
+								onClick={handleDeleteOrder}>
+								Delete
 							</button>
 						) : (
-							<button
-								type="submit"
-								className="h-fit"
-								onClick={handleCreateOrder}>
-								Order
-							</button>
+							<div className="invisible" />
 						)}
+						<div className="flex items-center gap-4">
+							{isEdit ? (
+								<button
+									type="submit"
+									className="h-fit"
+									onClick={handleUpdateOrder}>
+									Confirm
+								</button>
+							) : (
+								<button
+									type="submit"
+									className="h-fit"
+									onClick={handleCreateOrder}>
+									Order
+								</button>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

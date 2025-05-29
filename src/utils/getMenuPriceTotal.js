@@ -1,4 +1,8 @@
 export const getMenuPriceTotal = (menu) => {
+	if (menu.length == 0) {
+		return 0;
+	}
+
 	return menu.reduce(
 		(total, item) =>
 			total +
