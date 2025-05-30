@@ -42,6 +42,14 @@ const router = createBrowserRouter([
 		element: <ManageStock />,
 	},
 	{
+		path: "/order",
+		element: <Order />,
+	},
+	{
+		path: "/order/create",
+		element: <ManageOrder />,
+	},
+	{
 		element: <ProtectedRoute />, // Wrap all protected routes
 		children: [
 			{
@@ -51,14 +59,6 @@ const router = createBrowserRouter([
 			{
 				path: "/menu/edit/:menuId",
 				element: <ManageMenu />,
-			},
-			{
-				path: "/order",
-				element: <Order />,
-			},
-			{
-				path: "/order/create",
-				element: <ManageOrder />,
 			},
 			{
 				path: "/order/edit/:orderId",
