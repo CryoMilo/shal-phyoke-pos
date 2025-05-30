@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Menu from "./pages/Menu";
@@ -15,11 +14,12 @@ import ForgotPassword from "./components/Auth/ForgotPassword";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ManageStock from "./components/Stock/ManageStock";
 import { Providers } from "./context/Providers";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
+		element: <Home />,
 	},
 	{
 		path: "/menu",
