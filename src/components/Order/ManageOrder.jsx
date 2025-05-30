@@ -272,9 +272,11 @@ const ManageOrder = () => {
 					onClick={() => setVoucherModalOpen(true)}
 				/>
 			</div>
-			<div className="flex w-full gap-8 mt-6">
-				<div className="p-4">
-					<div className="flex flex-wrap justify-evenly gap-4">
+
+			<div className="flex gap-8 mt-6">
+				{/* Menu */}
+				<div className="w-full md:w-[60%] p-4">
+					<div className="grid grid-cols-2 gap-4 place-items-center md:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))]">
 						{menu.map((item) => (
 							<div
 								key={item.menu_id}
@@ -305,7 +307,7 @@ const ManageOrder = () => {
 				</div>
 
 				{/* Voucher */}
-				<div className="hidden md:block col-span-2 border-2 border-secondary rounded-lg p-6 relative">
+				<div className="flex-grow hidden md:block border-2 border-secondary rounded-lg p-6 relative">
 					{/* <button
 						type="button"
 						className="bg-secondary flex items-center gap-2 w-full justify-center mb-4"
