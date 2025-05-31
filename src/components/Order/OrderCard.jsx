@@ -5,9 +5,11 @@ import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 import { Link } from "react-router-dom";
 import supabase from "../../utils/supabase";
 import PaymentModal from "./PaymentModal";
+import { UserAuth } from "../../context/AuthContext";
 
 /* eslint-disable react/prop-types */
 const OrderCard = ({ order }) => {
+	const { session } = UserAuth();
 	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
 	const handleUpdateOrder = async (orderId, tableId) => {
@@ -101,9 +103,11 @@ const OrderCard = ({ order }) => {
 
 			{/* Action Buttons */}
 			<div className="mt-6 flex justify-between gap-2">
-				<Link className="w-full" to={`/order/edit/${order.id}`}>
-					<button className="w-full">See Details</button>
-				</Link>
+				{session && (
+					<Link className="w-full" to={`/order/edit/${order.id}`}>
+						<button className="w-full">See Details</button>
+					</Link>
+				)}
 
 				{order.payment_method !== null ? (
 					order.status !== "completed" && (

@@ -17,7 +17,6 @@ const Order = () => {
 			.select("*, table:table_id(*)")
 			.order("created_at", { ascending: true });
 
-		// Apply filter based on selected option
 		if (selectedFilter !== "all") {
 			query = query.eq("status", selectedFilter);
 		}
@@ -35,7 +34,7 @@ const Order = () => {
 		fetchOrders();
 		const unsubscribe = subscribeToOrders(setOrders);
 		return () => unsubscribe();
-	}, [selectedFilter]); // Re-fetch when filter changes
+	}, [selectedFilter]);
 
 	return (
 		<div className="p-6">

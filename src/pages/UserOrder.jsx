@@ -10,11 +10,15 @@ const UserOrder = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
 
+	const deviceId = localStorage.getItem("deviceId");
+
 	const fetchOrders = async () => {
 		let query = supabase
 			.from("order")
 			.select("*, table:table_id(*)")
 			.order("created_at", { ascending: true });
+
+		query = query.eq("device_id", deviceId);
 
 		const { data, error } = await query;
 		if (error) {

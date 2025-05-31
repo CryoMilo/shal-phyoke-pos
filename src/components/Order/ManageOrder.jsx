@@ -8,6 +8,7 @@ import { FaChevronLeft, FaShoppingBasket } from "react-icons/fa";
 import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 import VoucherModal from "./VoucherModal";
 import { UserAuth } from "../../context/AuthContext";
+import { v4 as uuidv4 } from "uuid";
 
 const ManageOrder = () => {
 	const { session } = UserAuth();
@@ -46,12 +47,19 @@ const ManageOrder = () => {
 			return;
 		}
 
+		const existingDeviceId = localStorage.getItem("deviceId");
+		if (!existingDeviceId) {
+			const newDeviceId = uuidv4();
+			localStorage.setItem("deviceId", newDeviceId);
+		}
+
 		const { error } = await supabase.from("order").insert([
 			{
 				status: "unpaid",
 				table_id: selectedTable?.id,
 				menu_items: selectedMenu,
 				payment_method: null,
+				device_id: localStorage.getItem("deviceId"),
 			},
 		]);
 
