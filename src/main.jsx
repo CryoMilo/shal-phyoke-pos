@@ -15,15 +15,12 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ManageStock from "./components/Stock/ManageStock";
 import { Providers } from "./context/Providers";
 import Home from "./pages/Home";
+import UserOrder from "./pages/UserOrder";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Home />,
-	},
-	{
-		path: "/menu",
-		element: <Menu />,
 	},
 	{
 		path: "/auth/login",
@@ -38,20 +35,33 @@ const router = createBrowserRouter([
 		element: <ForgotPassword />,
 	},
 	{
-		path: "/stock",
-		element: <ManageStock />,
+		path: "/user/order",
+		element: <UserOrder />,
 	},
 	{
-		path: "/order",
-		element: <Order />,
-	},
-	{
-		path: "/order/create",
+		path: "/user/order/create",
 		element: <ManageOrder />,
 	},
+
 	{
-		element: <ProtectedRoute />, // Wrap all protected routes
+		element: <ProtectedRoute />,
 		children: [
+			{
+				path: "/order",
+				element: <Order />,
+			},
+			{
+				path: "/order/create",
+				element: <ManageOrder />,
+			},
+			{
+				path: "/order/edit/:orderId",
+				element: <ManageOrder />,
+			},
+			{
+				path: "/menu",
+				element: <Menu />,
+			},
 			{
 				path: "/menu/create",
 				element: <ManageMenu />,
@@ -59,10 +69,6 @@ const router = createBrowserRouter([
 			{
 				path: "/menu/edit/:menuId",
 				element: <ManageMenu />,
-			},
-			{
-				path: "/order/edit/:orderId",
-				element: <ManageOrder />,
 			},
 			{
 				path: "/table",
@@ -75,6 +81,10 @@ const router = createBrowserRouter([
 			{
 				path: "/table/edit/:tableId",
 				element: <ManageTable />,
+			},
+			{
+				path: "/stock",
+				element: <ManageStock />,
 			},
 		],
 	},

@@ -85,15 +85,23 @@ const Home = () => {
 			</div>
 			<section className="grid place-items-center h-screen">
 				<nav className="w-[80%] lg:w-[60%] h-[60%] grid grid-cols-3 gap-4">
-					{navItems.map(({ name, path, size, logo }) => (
+					{session ? (
+						navItems.map(({ name, path, size, logo }) => (
+							<div
+								onClick={() => navigate(path)}
+								key={name}
+								className={`cursor-pointer bg-[#eeeeee] shadow-xl rounded-lg p-4 relative ${size}`}>
+								<h2 className="text-2xl text-black">{name}</h2>
+								{logo && logo()}
+							</div>
+						))
+					) : (
 						<div
-							onClick={() => navigate(path)}
-							key={name}
-							className={`cursor-pointer bg-[#eeeeee] shadow-xl rounded-lg p-4 relative ${size}`}>
-							<h2 className="text-2xl text-black">{name}</h2>
-							{logo && logo()}
+							onClick={() => navigate("/user/order/create")}
+							className={`cursor-pointer bg-[#eeeeee] shadow-xl rounded-lg p-4 relative col-span-3`}>
+							<h2 className="text-2xl text-black">Click To Order</h2>
 						</div>
-					))}
+					)}
 				</nav>
 			</section>
 		</>

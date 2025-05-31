@@ -7,8 +7,10 @@ import { IoIosAdd } from "react-icons/io";
 import { FaChevronLeft, FaShoppingBasket } from "react-icons/fa";
 import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 import VoucherModal from "./VoucherModal";
+import { UserAuth } from "../../context/AuthContext";
 
 const ManageOrder = () => {
+	const { session } = UserAuth();
 	const { orderId } = useParams();
 	const isEdit = !!orderId;
 
@@ -53,19 +55,6 @@ const ManageOrder = () => {
 			},
 		]);
 
-		if (selectedTable?.id) {
-			const { error: tableError } = await supabase
-				.from("table")
-				.update({ occupied: true })
-				.eq("id", selectedTable.id);
-
-			if (tableError) {
-				console.error("Error updating table status:", tableError);
-				alert("Failed to update table status.");
-				return;
-			}
-		}
-
 		if (error) {
 			console.error("Error creating menu item:", error);
 			alert("Failed to create menu item.");
@@ -73,7 +62,7 @@ const ManageOrder = () => {
 			alert("Menu item created successfully!");
 		}
 
-		navigate("/order");
+		navigate(session ? "/order" : "/user/order");
 	}
 
 	const handleUpdateOrder = async () => {
@@ -261,7 +250,7 @@ const ManageOrder = () => {
 						className="text-secondary"
 						cursor="pointer"
 						size={22}
-						onClick={() => navigate("/order")}
+						onClick={() => navigate(session ? "/order" : "/user/order")}
 					/>
 					<h2 className="text-2xl">{isEdit ? "Edit" : "Create"} Your Order</h2>
 				</div>
