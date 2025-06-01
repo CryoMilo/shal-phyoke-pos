@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import supabase from "../../utils/supabase";
 import PaymentModal from "./PaymentModal";
 import { UserAuth } from "../../context/AuthContext";
+import UserPaymentQR from "./UserPaymentQR";
 
 /* eslint-disable react/prop-types */
 const OrderCard = ({ order }) => {
@@ -134,8 +135,15 @@ const OrderCard = ({ order }) => {
 				</div>
 			)}
 
-			{isPaymentModalOpen && (
+			{isPaymentModalOpen && session && (
 				<PaymentModal
+					orderId={order.id}
+					onClose={() => setIsPaymentModalOpen(false)}
+				/>
+			)}
+
+			{isPaymentModalOpen && !session && (
+				<UserPaymentQR
 					orderId={order.id}
 					onClose={() => setIsPaymentModalOpen(false)}
 				/>
