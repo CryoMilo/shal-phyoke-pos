@@ -4,12 +4,14 @@ import supabase from "../utils/supabase";
 import { subscribeToOrders } from "../utils/orderSubscription";
 import OrderCard from "../components/Order/OrderCard";
 import { FaChevronLeft } from "react-icons/fa";
+import QrReaderModal from "../components/Order/QrReaderModal";
 
 const Order = () => {
 	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [selectedFilter, setSelectedFilter] = useState("unpaid"); // Default: Show pending orders
+	const [selectedFilter, setSelectedFilter] = useState("unpaid");
+	const [isQrReaderOpen, setIsQrReaderOpen] = useState(false);
 
 	const fetchOrders = async () => {
 		let query = supabase
@@ -46,9 +48,12 @@ const Order = () => {
 					className="place-self-start mt-3 text-secondary"
 				/>
 				<h2 className="text-3xl">Order</h2>
-				<Link className="place-self-end" to="/order/create">
-					<button>Create</button>
-				</Link>
+				<div className="place-self-end flex gap-4">
+					<button>Checkout</button>
+					<Link to="/order/create">
+						<button>Create</button>
+					</Link>
+				</div>
 			</div>
 
 			{/* Selector Bar */}
@@ -78,6 +83,10 @@ const Order = () => {
 				</div>
 			) : (
 				<p>No orders found.</p>
+			)}
+
+			{isQrReaderOpen && (
+				<QrReaderModal onClose={() => setIsQrReaderOpen(false)} />
 			)}
 		</div>
 	);

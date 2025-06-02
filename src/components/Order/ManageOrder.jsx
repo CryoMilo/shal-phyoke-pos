@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../../utils/supabase";
-// import SelectTableModal from "./SelectTableModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { TbPaperBag } from "react-icons/tb";
 import { IoIosAdd } from "react-icons/io";
@@ -9,6 +8,7 @@ import { getMenuPriceTotal } from "../../utils/getMenuPriceTotal";
 import VoucherModal from "./VoucherModal";
 import { UserAuth } from "../../context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
+import PaymentModal from "./PaymentModal";
 
 const ManageOrder = () => {
 	const { session } = UserAuth();
@@ -18,6 +18,7 @@ const ManageOrder = () => {
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState([]);
 	const [selectedTable, setSelectedTable] = useState(null);
+	const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 	const [selectedMenu, setSelectedMenu] = useState([]);
 	// const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 	const [isVoucherModalOpen, setVoucherModalOpen] = useState(false);
@@ -59,7 +60,7 @@ const ManageOrder = () => {
 				table_id: selectedTable?.id,
 				menu_items: selectedMenu,
 				payment_method: null,
-				device_id: localStorage.getItem("deviceId"),
+				device_id: !session ? localStorage.getItem("deviceId") : null,
 			},
 		]);
 
@@ -422,6 +423,14 @@ const ManageOrder = () => {
 							<div className="invisible"></div>
 						)}
 						<div className="flex items-center gap-4">
+							{session && isEdit && (
+								<button
+									type="submit"
+									className="w-full bg-yellow-400 text-black"
+									onClick={() => setIsPaymentModalOpen(true)}>
+									Pay
+								</button>
+							)}
 							{isEdit ? (
 								<button
 									type="submit"
@@ -455,6 +464,13 @@ const ManageOrder = () => {
 					handleUpdateOrder={handleUpdateOrder}
 					handleDeleteOrder={handleDeleteOrder}
 					onClose={() => setVoucherModalOpen(false)}
+				/>
+			)}
+
+			{isPaymentModalOpen && session && (
+				<PaymentModal
+					orderId={orderId}
+					onClose={() => setIsPaymentModalOpen(false)}
 				/>
 			)}
 

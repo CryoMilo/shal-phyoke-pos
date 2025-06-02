@@ -42,7 +42,7 @@ const Login = () => {
 	};
 
 	return (
-		<section className="flex items-center justify-center min-h-screen bg-primary">
+		<section className="flex items-center p-8 justify-center min-h-screen bg-primary">
 			<div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-2xl">
 				<h2 className="text-2xl font-bold text-center text-gray-900">
 					Welcome to Shal Phyoke
