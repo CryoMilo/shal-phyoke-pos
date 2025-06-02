@@ -49,7 +49,7 @@ const Order = () => {
 				/>
 				<h2 className="text-3xl">Order</h2>
 				<div className="place-self-end flex gap-4">
-					<button>Checkout</button>
+					<button onClick={() => setIsQrReaderOpen(true)}>Checkout</button>
 					<Link to="/order/create">
 						<button>Create</button>
 					</Link>

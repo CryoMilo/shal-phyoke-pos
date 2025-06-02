@@ -4,6 +4,9 @@ import { useState } from "react";
 
 const QrReaderModal = ({ onClose }) => {
 	const [data, setData] = useState("No result");
+	const [hasScanned, setHasScanned] = useState(false);
+
+	console.log("Modal is Mouting");
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -12,17 +15,19 @@ const QrReaderModal = ({ onClose }) => {
 				<>
 					<QrReader
 						onResult={(result, error) => {
-							if (result) {
+							if (!!result && !hasScanned) {
+								setHasScanned(true);
 								setData(result?.text);
+								alert("Scanned QR Code:", result.text);
 							}
 
-							if (error) {
-								console.info(error);
+							if (error && error.name !== "NotFoundException") {
+								console.info("QR Scan Error:", error);
 							}
 						}}
+						constraints={{ facingMode: "environment" }}
 						style={{ width: "100%" }}
 					/>
-					<p>{data}</p>
 				</>
 				<div className="mt-4 flex justify-end gap-4">
 					<button
