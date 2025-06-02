@@ -18,7 +18,7 @@ const QrReaderModal = ({ onClose }) => {
 							if (!!result && !hasScanned) {
 								setHasScanned(true);
 								setData(result?.text);
-								alert("Scanned QR Code:", result.text);
+								alert("Scanned QR Code:", data);
 							}
 
 							if (error && error.name !== "NotFoundException") {
@@ -29,6 +29,7 @@ const QrReaderModal = ({ onClose }) => {
 						style={{ width: "100%" }}
 					/>
 				</>
+				<p>Result is : {data}</p>
 				<div className="mt-4 flex justify-end gap-4">
 					<button
 						className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
