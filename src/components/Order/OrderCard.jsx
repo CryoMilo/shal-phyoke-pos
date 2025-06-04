@@ -44,7 +44,7 @@ const OrderCard = ({ order }) => {
 			<div>
 				<div className="flex justify-between items-start">
 					<div>
-						<div className="bg-white w-14 h-14 p-3 border-2 border-secondary rounded-md flex justify-center mb-4">
+						<div className="bg-primary w-14 h-14 p-3 border-2 border-secondary rounded-md flex justify-center mb-4">
 							{order?.table?.image_url && (
 								<img
 									src={order?.table.image_url}

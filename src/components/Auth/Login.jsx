@@ -43,7 +43,7 @@ const Login = () => {
 
 	return (
 		<section className="flex items-center p-8 justify-center min-h-screen bg-primary">
-			<div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-2xl">
+			<div className="w-full max-w-md p-8 space-y-6 bg-secondary shadow-md rounded-2xl">
 				<h2 className="text-2xl font-bold text-center text-gray-900">
 					Welcome to Shal Phyoke
 				</h2>
@@ -79,7 +79,7 @@ const Login = () => {
 					</div>
 					<button
 						type="submit"
-						className="w-full px-4 py-2 font-bold text-white bg-black rounded-md hover:bg-gray-800 disabled:opacity-50"
+						className="w-full px-4 py-2 font-bold text-secondary bg-primary rounded-md hover:bg-gray-800 disabled:opacity-50"
 						disabled={loading}>
 						{loading ? "Signing in..." : "Sign In"}
 					</button>

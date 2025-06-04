@@ -43,8 +43,8 @@ const QrReaderModal = ({ onClose }) => {
 	}, [hasScanned]);
 
 	return (
-		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-			<div className="bg-primary rounded-lg p-6 w-96 shadow-lg text-white">
+		<div className="fixed inset-0 bg-primary bg-opacity-50 flex justify-center items-center z-50">
+			<div className="bg-primary rounded-lg p-6 w-96 shadow-lg text-secondary">
 				<h2 className="text-lg font-semibold mb-4">Scan QR Code</h2>
 
 				<video ref={videoRef} className="w-full rounded" />

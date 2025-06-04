@@ -23,20 +23,20 @@ const ManageStock = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-primary text-white flex flex-col items-center p-6">
+		<div className="min-h-screen bg-primary text-secondary flex flex-col items-center p-6">
 			<h1 className="text-3xl font-bold mb-8">Manage Stock</h1>
 
 			<div className="w-full max-w-2xl space-y-4">
 				{stock.map((item) => (
 					<div
 						key={item.id}
-						className="flex items-center justify-between border border-white p-4 rounded-xl">
+						className="flex items-center justify-between border border-secondary p-4 rounded-xl">
 						<label className="flex items-center space-x-3">
 							<input
 								type="checkbox"
 								checked={selectedItems.has(item.id)}
 								onChange={() => toggleSelect(item.id)}
-								className="form-checkbox h-5 w-5 text-white bg-black border-white"
+								className="form-checkbox h-5 w-5 text-secondary bg-primary border-secondary"
 							/>
 							<span className="text-lg font-medium">{item.name}</span>
 						</label>
@@ -44,7 +44,7 @@ const ManageStock = () => {
 						<div className="flex items-center space-x-4">
 							<button
 								onClick={() => updateQuantity(item.id, -1)}
-								className="bg-white text-black px-3 py-1 rounded-full hover:bg-gray-200 transition">
+								className="bg-secondary text-primary px-3 py-1 rounded-full hover:bg-gray-200 transition">
 								-
 							</button>
 							<span className="w-12 text-center">{item.quantity || 0}</span>

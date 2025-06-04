@@ -30,7 +30,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 	};
 
 	return (
-		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+		<div className="fixed inset-0 bg-primary bg-opacity-50 flex justify-center items-center z-50">
 			<div className="bg-primary rounded-lg p-6 w-[50%] shadow-lg">
 				<h3 className="text-xl font-semibold mb-4">Select a Table</h3>
 				<div className="w-full min-h-64">
@@ -41,7 +41,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 							<div
 								onClick={() => handleTableClick(null)}
 								className="flex flex-col cursor-pointer">
-								<div className="w-16 h-16 grid place-items-center rounded-md border-2 border-secondary bg-white">
+								<div className="w-16 h-16 grid place-items-center rounded-md border-2 border-secondary bg-secondary">
 									<MdOutlineDoNotDisturbAlt color="black" size={40} />
 								</div>
 								<div className="w-16 text-center">None</div>
@@ -57,7 +57,7 @@ const SelectTableModal = ({ setSelectedTable, onClose }) => {
 										className={`w-16 h-16 border-2 rounded-md ${
 											item.occupied
 												? "border-gray-500 bg-gray-700"
-												: "border-secondary bg-white cursor-pointer"
+												: "border-secondary bg-secondary cursor-pointer"
 										}`}>
 										<img
 											src={item.image_url}
